@@ -1,4 +1,7 @@
-package src.main.java.sk.tuke.gamestudio.game.pegsolitaire.core;
+package sk.tuke.gamestudio.game.pegsolitaire.core;
 
-public class Peg {
+public class Peg extends Tile {
+    public Peg() {
+        super(TileState.PEG);
+    }
 }

@@ -1,4 +1,4 @@
-package src.main.java.sk.tuke.gamestudio.game.pegsolitaire.core;
+package sk.tuke.gamestudio.game.pegsolitaire.core;
 
 public enum GameState {
     PLAYING,
