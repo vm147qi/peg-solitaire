@@ -1,16 +1,23 @@
 package sk.tuke.gamestudio.game.pegsolitaire.consoleui;
 
+import sk.tuke.gamestudio.game.pegsolitaire.core.Move;
+
 import java.util.Scanner;
 
 public class InputHandler {
-    private Scanner scanner;
+    private final Scanner scanner;
 
     public InputHandler() {
         this.scanner = new Scanner(System.in);
     }
 
-    public String readMove() {
-        // TODO Move – отримує введення користувача та перетворює його на хід
-        return scanner.nextLine();
+    public Move readMove() {
+        // TODO – отримує введення користувача та перетворює його на хід \ prijíma vstup od používateľa a konvertuje ho na pohyb
+        System.out.println("Enter move fromRow fromCol toRow toCol: ");
+        int fromRow = scanner.nextInt();
+        int fromCol = scanner.nextInt();
+        int toRow = scanner.nextInt();
+        int toCol = scanner.nextInt();
+        return new Move(fromRow, fromCol, toRow, toCol);
     }
 }

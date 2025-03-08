@@ -1,0 +1,11 @@
+src\main\java\sk\tuke\gamestudio\game\pegsolitaire\consoleui\ConsoleUI.class
+src\main\java\sk\tuke\gamestudio\game\pegsolitaire\core\Empty.class
+sk\tuke\gamestudio\game\pegsolitaire\core\GameBoard.class
+src\main\java\sk\tuke\gamestudio\game\pegsolitaire\core\Peg.class
+src\main\java\sk\tuke\gamestudio\game\pegsolitaire\consoleui\Renderer.class
+sk\tuke\gamestudio\game\pegsolitaire\core\Move.class
+src\main\java\sk\tuke\gamestudio\game\pegsolitaire\core\Tile.class
+src\main\java\sk\tuke\gamestudio\game\pegsolitaire\consoleui\InputHandler.class
+src\main\java\sk\tuke\gamestudio\game\pegsolitaire\core\TileState.class
+src\main\java\sk\tuke\gamestudio\game\pegsolitaire\PegSolitaireMain.class
+src\main\java\sk\tuke\gamestudio\game\pegsolitaire\core\GameState.class

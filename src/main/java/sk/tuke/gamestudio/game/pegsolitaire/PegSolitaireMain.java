@@ -1,24 +1,17 @@
 package sk.tuke.gamestudio.game.pegsolitaire;
 
 import sk.tuke.gamestudio.game.pegsolitaire.consoleui.ConsoleUI;
-import sk.tuke.gamestudio.game.pegsolitaire.core.GameBoard;
-import sk.tuke.gamestudio.game.pegsolitaire.core.GameState;
-import sk.tuke.gamestudio.game.pegsolitaire.core.Tile;
+import sk.tuke.gamestudio.game.pegsolitaire.core.*;
 
 public class PegSolitaireMain {
     public static void main(String[] args) {
 
-        int width = 7;
-        int height = 7;
+        int width = 4, height = 4;
 
-        Tile[][] tiles = new Tile[height][width];
+        GameBoard board = new GameBoard(width, height);
 
-        GameState state = GameState.PLAYING;
+        ConsoleUI ui = new ConsoleUI();
 
-        GameBoard board = new GameBoard(width, height, tiles, state);
-
-        ConsoleUI consoleUI = new ConsoleUI();
-
-        consoleUI.play(board);
+        ui.play(board);
     }
 }

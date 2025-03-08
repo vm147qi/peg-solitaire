@@ -4,7 +4,8 @@ Game name: Peg Solitaire
 Implemented: Veronika Mukosii 2025
 
 Short description of the game:
-//   Slovenská verzia ->
+
+    Slovenská verzia ->
 I. Generovať dosku: vytvorí štandardné (alebo vlastné) rozloženie figúrok s jednou
 prázdnou bunkou.
 II. Kontrola stavu hry:
