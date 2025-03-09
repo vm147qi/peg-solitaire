@@ -1,8 +1,8 @@
 package sk.tuke.gamestudio.game.pegsolitaire.consoleui;
 
 import sk.tuke.gamestudio.game.pegsolitaire.core.GameBoard;
+import sk.tuke.gamestudio.game.pegsolitaire.core.GameState;
 import sk.tuke.gamestudio.game.pegsolitaire.core.Move;
-import sk.tuke.gamestudio.game.pegsolitaire.core.TileState;
 
 public class ConsoleUI {
     private final InputHandler inputHandler;
@@ -23,22 +23,10 @@ public class ConsoleUI {
             }
         }
         renderer.drawBoard(board);
-        if (countPegs(board) == 1) {
+        if (board.getState() == GameState.WON) {
             System.out.println("Congratulations! You won!");
         } else {
-            System.out.println("Game Over! No valid moves left.");
+            System.out.println("Game Over! No valid moves.");
         }
-    }
-
-    private int countPegs(GameBoard board) {
-        int count = 0;
-        for (int row = 0; row < board.getHeight(); row++) {
-            for (int col = 0; col < board.getWidth(); col++) {
-                if (board.getTile(row, col).getState() == TileState.PEG) {
-                    count++;
-                }
-            }
-        }
-        return count;
     }
 }

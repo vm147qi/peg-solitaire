@@ -6,7 +6,7 @@ import sk.tuke.gamestudio.game.pegsolitaire.core.*;
 public class PegSolitaireMain {
     public static void main(String[] args) {
 
-        int width = 7, height = 7;
+        int width = 4, height = 4;
 
         GameBoard board = new GameBoard(width, height);
 

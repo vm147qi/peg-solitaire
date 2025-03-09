@@ -20,9 +20,9 @@ public class Renderer {
 
            for (int col = 0; col < board.getWidth(); col++) {
                if (board.getTile(row, col).getState() == TileState.PEG) {
-                   System.out.print(" P");
+                   System.out.print(" B");
                } else {
-                   System.out.print(" .");
+                   System.out.print(" _");
                }
            }
            System.out.println();
