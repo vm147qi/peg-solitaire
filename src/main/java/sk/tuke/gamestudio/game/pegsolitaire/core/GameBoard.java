@@ -25,6 +25,17 @@ public class GameBoard {
 
     public int getWidth() {return width;}
 
+    public GameState getState() {
+        if (hasWon()) {
+            state = GameState.WON;
+        } else if (isGameOver()) {
+            state = GameState.NO_MOVES;
+        } else {
+            state = GameState.PLAYING;
+        }
+        return state;
+    }
+
 
     public boolean applyMove(Move move) {
         // TODO: застосовує хід move, змінюючи стан дошки. Повертає true, якщо хід успішний.
@@ -112,5 +123,19 @@ public class GameBoard {
             }
         }
         tiles[height / 2][width / 2] = new Empty(); // Centrum
+    }
+
+    /// ДОДАТИ В ПДФ ///
+    private boolean hasWon() {
+        /// TODO: Метод для перевірки виграшу \ Metóda overovania výhier
+        int countPeg = 0;
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                if (tiles[row][col].getState() == TileState.PEG) {
+                    countPeg++;
+                }
+            }
+        }
+        return countPeg == 1;
     }
 }
