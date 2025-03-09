@@ -13,7 +13,6 @@ public class Renderer {
            System.out.printf("%2d", col);
        }
        System.out.println();
-
        // číslo riadku
        for (int row = 0; row < board.getHeight(); row++) {
            System.out.printf("%2d ", row);

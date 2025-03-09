@@ -18,6 +18,10 @@ public class ConsoleUI {
         while (!board.isGameOver()) {
             renderer.drawBoard(board);
             Move move = inputHandler.readMove();
+            if (move == null) {
+                System.out.println("Exiting game...");
+                return;
+            }
             if (!board.applyMove(move)) {
                 System.out.println("Invalid move! Try another move.");
             }
