@@ -1,7 +1,7 @@
 package sk.tuke.gamestudio.game.pegsolitaire.consoleui;
 
 import sk.tuke.gamestudio.game.pegsolitaire.core.GameBoard;
-import sk.tuke.gamestudio.game.pegsolitaire.core.TileState;
+import sk.tuke.gamestudio.game.pegsolitaire.core.Tile;
 
 public class Renderer {
    public void drawBoard(GameBoard board) {
@@ -10,20 +10,17 @@ public class Renderer {
        //  číslo stĺpca
        System.out.print("   ");
        for (int col = 0; col < board.getWidth(); col++) {
-           System.out.print(col + " ");
+           System.out.printf("%2d", col);
        }
        System.out.println();
 
+       // číslo riadku
        for (int row = 0; row < board.getHeight(); row++) {
-           // číslo riadku
-           System.out.print(row + " ");
+           System.out.printf("%2d ", row);
 
            for (int col = 0; col < board.getWidth(); col++) {
-               if (board.getTile(row, col).getState() == TileState.PEG) {
-                   System.out.print(" B");
-               } else {
-                   System.out.print(" _");
-               }
+               Tile tile = board.getTile(row, col);
+               System.out.printf("%2s", tile);  //tile.toString()
            }
            System.out.println();
        }
