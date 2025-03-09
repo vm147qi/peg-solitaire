@@ -4,13 +4,20 @@ import sk.tuke.gamestudio.game.pegsolitaire.core.GameBoard;
 import sk.tuke.gamestudio.game.pegsolitaire.core.GameState;
 import sk.tuke.gamestudio.game.pegsolitaire.core.Move;
 
+import java.util.Scanner;
+
 public class ConsoleUI {
     private final InputHandler inputHandler;
     private final Renderer renderer;
+    private final Scanner scanner;
+    private int width, height;
 
-    public ConsoleUI() {
+    public ConsoleUI(int width, int height) {
         inputHandler = new InputHandler();
         renderer = new Renderer();
+        scanner = new Scanner(System.in);
+        this.width = width;
+        this.height = height;
     }
 
     public void play(GameBoard board) {
@@ -31,6 +38,17 @@ public class ConsoleUI {
             System.out.println("Congratulations! You won!");
         } else {
             System.out.println("Game Over! No valid moves.");
+        }
+        startNewGame();
+    }
+
+    private void startNewGame() {
+        System.out.print("Do you want to start a new game (A/N)? ");
+        String response = scanner.nextLine().trim().toUpperCase();
+        if (response.equals("A")) {
+            play(new GameBoard(width, height));
+        } else {
+            System.out.println("Exiting game...");
         }
     }
 }

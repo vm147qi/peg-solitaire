@@ -10,7 +10,7 @@ public class PegSolitaireMain {
 
         GameBoard board = new GameBoard(width, height);
 
-        ConsoleUI ui = new ConsoleUI();
+        ConsoleUI ui = new ConsoleUI(width, height);
 
         ui.play(board);
     }
