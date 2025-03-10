@@ -33,6 +33,7 @@ public class ConsoleUI {
 
         GameTitle.display();
         showTopScores();
+        System.out.println("  ");
     }
 
     public void play(GameBoard board) {
@@ -51,9 +52,10 @@ public class ConsoleUI {
         renderer.drawBoard(board);
         if (board.getState() == GameState.WON) {
             System.out.println("Congratulations! You won!");
-            scoreSubmission();
+            scoreSubmission(board);
         } else {
             System.out.println("Game Over! No valid moves.");
+            scoreSubmission(board);
         }
         gameFeedback();
         startNewGame();
@@ -69,7 +71,7 @@ public class ConsoleUI {
         }
     }
 
-    private void scoreSubmission() {
+    private void scoreSubmission(GameBoard board) {
         System.out.print("Enter your name: ");
         String player = scanner.nextLine().trim();
 
@@ -77,16 +79,15 @@ public class ConsoleUI {
             System.out.println("Name cannot be empty!");
             return;
         }
-        System.out.print("Enter your score: ");
-        int points = Integer.parseInt(scanner.nextLine().trim());
 
-        if (points < 0) {
-            System.out.println("Score cannot be negative (-10)!");
-            return;
-        }
+        int points = board.calculateScore();
+        System.out.println("Your score: " + points);
+
         scoreService.addScore(new Score( "PegSolitaire", player, points, new Date()));
         showTopScores();
+        System.out.println("  ");
     }
+
 
     private void gameFeedback() {
         System.out.print("Enter your name: ");
@@ -101,16 +102,30 @@ public class ConsoleUI {
 
         System.out.print("Would you like to rate the game (1-5)? (Y/N): ");
         if (scanner.nextLine().trim().equalsIgnoreCase("Y")) {
-            System.out.print("Enter your rating (1-5): ");
-            int rating = Integer.parseInt(scanner.nextLine().trim());
+            int rating = -1;
+            while (true) {
+                System.out.print("Enter your rating (1-5): ");
+                try {
+                    rating = Integer.parseInt(scanner.nextLine().trim());
+                    if (rating >= 1 && rating <= 5) {
+                        break;  //Ukončenie cyklu, ak je hodnotenie správne
+                    } else {
+                        System.out.println("Invalid rating! Please enter a number between 1-5.");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input! Please enter a valid number."); // pre písmená
+                }
+            }
             ratingService.setRating(new Rating("PegSolitaire",player, rating, new Date()));
         }
     }
 
     private void showTopScores() {
-        System.out.println("\n--- TOP 10 SCORES GAME PEGSOLITAIRE ---");
-        List<Score> scores = scoreService.getTopScores("PegSolitaire");
+        String title = "--- TOP 10 SCORES GAME PEGSOLITAIRE ---";
+        String colorScore = ColorScore.getColoredTitle(title);
+        System.out.println("\n" + colorScore);
 
+        List<Score> scores = scoreService.getTopScores("PegSolitaire");
         if (scores.isEmpty()) {
             System.out.println("No scores found.");
         } else {
@@ -119,5 +134,4 @@ public class ConsoleUI {
             }
         }
     }
-
 }

@@ -138,4 +138,16 @@ public class GameBoard {
         }
         return countPeg == 1;
     }
+
+    public int calculateScore() {
+        int score = 0;
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                if (tiles[row][col].getState() == TileState.EMPTY) {
+                    score++;
+                }
+            }
+        }
+        return score;
+    }
 }

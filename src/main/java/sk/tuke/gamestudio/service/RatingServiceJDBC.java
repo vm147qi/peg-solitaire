@@ -24,7 +24,7 @@ public class RatingServiceJDBC implements RatingService {
             statement.setTimestamp(4, new Timestamp(rating.getRatedOn().getTime()));
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new RatingException("Problem inserting/updating rating", e);
+            throw new RatingException("Problem inserting rating", e);
         }
     }
 
@@ -40,7 +40,7 @@ public class RatingServiceJDBC implements RatingService {
                 return 0;
             }
         } catch (SQLException e) {
-            throw new RatingException("Problem selecting average rating", e);
+            throw new RatingException("Problem selecting  rating", e);
         }
     }
 
