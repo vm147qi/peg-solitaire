@@ -3,6 +3,7 @@ package sk.tuke.gamestudio.game.pegsolitaire;
 import sk.tuke.gamestudio.game.pegsolitaire.consoleui.ConsoleUI;
 import sk.tuke.gamestudio.game.pegsolitaire.core.*;
 
+
 public class PegSolitaireMain {
     public static void main(String[] args) {
 
