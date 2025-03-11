@@ -4,6 +4,7 @@ import sk.tuke.gamestudio.entity.Comment;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -40,6 +41,7 @@ public class CommentServiceJDBC implements CommentService{
                 while (rs.next()) {
                     comments.add(new Comment(rs.getString(1), rs.getString(2), rs.getString(3), rs.getTimestamp(4)));
                 }
+                comments.sort(Comparator.comparing(Comment::getCommentedOn).reversed());//
                 return comments;
             }
         } catch (SQLException e) {
