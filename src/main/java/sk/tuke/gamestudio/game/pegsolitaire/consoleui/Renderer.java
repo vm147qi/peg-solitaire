@@ -2,6 +2,7 @@ package sk.tuke.gamestudio.game.pegsolitaire.consoleui;
 
 import sk.tuke.gamestudio.game.pegsolitaire.core.GameBoard;
 import sk.tuke.gamestudio.game.pegsolitaire.core.Tile;
+import sk.tuke.gamestudio.game.pegsolitaire.core.TileState;
 
 public class Renderer {
    public void drawBoard(GameBoard board) {
@@ -24,4 +25,5 @@ public class Renderer {
            System.out.println();
        }
    }
+
 }

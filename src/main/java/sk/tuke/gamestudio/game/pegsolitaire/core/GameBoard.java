@@ -125,6 +125,7 @@ public class GameBoard {
         tiles[height / 2][width / 2] = new Empty(); // Centrum
     }
 
+
     /// ДОДАТИ В ПДФ ///
     private boolean hasWon() {
         /// TODO: Метод для перевірки виграшу \ Metóda overovania výhier

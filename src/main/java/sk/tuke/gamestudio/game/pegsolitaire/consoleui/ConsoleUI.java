@@ -21,19 +21,22 @@ public class ConsoleUI {
     private final ScoreService scoreService;
     private int width, height;
 
-    public ConsoleUI(int width, int height) {
+    public ConsoleUI() {
         inputHandler = new InputHandler();
         renderer = new Renderer();
         scanner = new Scanner(System.in);
         commentService = new CommentServiceJDBC();
         ratingService = new RatingServiceJDBC();
         scoreService = new ScoreServiceJDBC();
-        this.width = width;
-        this.height = height;
+    }
 
+    public void startGame() {
         GameTitle.display();
         showTopScores();
         System.out.println("  ");
+        askForRules();
+        System.out.println("  ");
+        askForGameLevel();
     }
 
     public void play(GameBoard board) {
@@ -60,6 +63,7 @@ public class ConsoleUI {
         gameFeedback();
         startNewGame();
     }
+
 
     private void startNewGame() {
         System.out.print("Do you want to start a new game (Y/N)? ");
@@ -133,5 +137,51 @@ public class ConsoleUI {
                 System.out.printf("%s - %d points (%s)\n", score.getPlayer(), score.getPoints(), score.getPlayedOn());
             }
         }
+    }
+
+    private void askForRules() {
+        String respons;
+        do {
+            System.out.print("Do you want to see the rules of the game (Y/N)? ");
+            respons = scanner.nextLine().trim().toUpperCase();
+            if (respons.equals("Y")) {
+                GameRules.displayRules();
+                break;
+            } else if (respons.equals("N")) {
+                break;
+            } else {
+                System.out.println("Invalid input. Please enter 'Y' for Yes or 'N' for No.");
+            }
+        } while (true);
+    }
+
+    private void askForGameLevel() {
+        String choice;
+        do {
+            System.out.println("Choose the game level (More difficult level = Higher score):");
+            System.out.println("1. Easy (4x4)");
+            System.out.println("2. Medium (6x6)");
+            System.out.println("3. Hard (8x8)");
+            System.out.print("Enter your choice (1/2/3): ");
+
+            choice = scanner.nextLine().trim();
+            if ("1".equals(choice)) {
+                width = 4;
+                height = 4;
+                break;
+            } else if ("2".equals(choice)) {
+                width = 6;
+                height = 6;
+                break;
+            } else if ("3".equals(choice)) {
+                width = 8;
+                height = 8;
+                break;
+            } else {
+                System.out.println("Invalid choice. Please choose a valid option (1/2/3) -> ");
+            }
+        } while (true);
+        GameBoard board = new GameBoard(width, height);
+        play(board);
     }
 }
