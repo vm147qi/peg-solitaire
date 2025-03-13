@@ -3,10 +3,7 @@ package sk.tuke.gamestudio.game.pegsolitaire.consoleui;
 import sk.tuke.gamestudio.entity.Comment;
 import sk.tuke.gamestudio.entity.Rating;
 import sk.tuke.gamestudio.entity.Score;
-import sk.tuke.gamestudio.game.pegsolitaire.core.BoardShape;
-import sk.tuke.gamestudio.game.pegsolitaire.core.GameBoard;
-import sk.tuke.gamestudio.game.pegsolitaire.core.GameState;
-import sk.tuke.gamestudio.game.pegsolitaire.core.Move;
+import sk.tuke.gamestudio.game.pegsolitaire.core.*;
 import sk.tuke.gamestudio.service.*;
 
 import java.util.Date;
@@ -44,6 +41,9 @@ public class ConsoleUI {
 
     public void play(GameBoard board) {
         //  TODO: запускає гру та керує ігровим процесом. \ spustí hru a ovláda hranie.
+        long startTime = System.currentTimeMillis();
+        int moveCount = 0;
+
         while (!board.isGameOver()) {
             renderer.drawBoard(board);
             Move move = inputHandler.readMove(board);
@@ -55,17 +55,20 @@ public class ConsoleUI {
             if (move == InputHandler.UNDO_MOVE) {
                 if (board.undoMove()) {
                     System.out.println("Last move undone.");
-                    continue;
                 } else {
                     System.out.println("No moves to undo.");
                 }
+                continue;
             }
 
-            if (!board.applyMove(move)) {
+            if (board.applyMove(move)) {
+                moveCount++;
+            } else {
                 System.out.println("Invalid move! Try another move.");
             }
         }
         renderer.drawBoard(board);
+        showGameStatistics(board, startTime, moveCount);
         if (board.getState() == GameState.WON) {
             System.out.println("\u001B[31mCongratulations! You won!\u001B[0m");
             scoreSubmission(board);
@@ -198,5 +201,30 @@ public class ConsoleUI {
                     System.out.println("Invalid choice. Please enter 1, 2, or 3.");
             }
         }
+    }
+
+    private void showGameStatistics(GameBoard board, long startTime, int moveCount) {
+        long endTime = System.currentTimeMillis();
+        long timeSpent = (endTime - startTime) / 1000;
+        int remainingPegs = countRemainingPegs(board);
+
+        System.out.println("\n--- GAME STATISTICS ---");
+        System.out.println("Total moves: " + moveCount);
+        System.out.println("Time spent: " + timeSpent + " seconds");
+        System.out.println("Remaining pegs: " + remainingPegs);
+        System.out.println("  ");
+    }
+
+    private int countRemainingPegs(GameBoard board) {
+        int count = 0;
+        for (int row = 0; row < board.getHeight(); row++) {
+            for (int col = 0; col < board.getWidth(); col++) {
+                Tile tile = board.getTile(row, col);
+                if (tile != null && tile.getState() == TileState.PEG) {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 }

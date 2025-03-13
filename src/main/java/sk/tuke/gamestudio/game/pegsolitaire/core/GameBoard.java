@@ -247,6 +247,7 @@ public class GameBoard {
         return score;
     }
 
+
     @Override
     public String toString() {
         return String.format("GameBoard [%s] (%dx%d) - State: %s", shape, width, height, state);
