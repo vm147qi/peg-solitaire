@@ -9,17 +9,19 @@ class GameBoardTest {
 
     @Test
     public void testInitialBoard() {
-        GameBoard board = new GameBoard(7, 7);
+        GameBoard board = new GameBoard(BoardShape.CLASSIC);
+
         assertEquals(7, board.getWidth(), "Šírka hracej dosky by mala byť 7.");
         assertEquals(7, board.getHeight(), "Výška hracej dosky by mala byť 7.");
 
         assertEquals(TileState.EMPTY, board.getTile(3, 3).getState(), "Stredná dlaždica by mala byť prázdna.");
-        assertEquals(TileState.PEG, board.getTile(0, 0).getState(), " Iná Dlaždica by mala obsahovať Peg.");
+        assertEquals(TileState.NON_PLAYABLE, board.getTile(0, 0).getState(), "Dlaždica (0,0) by mala byť NonPlayable.");
+        assertEquals(TileState.PEG, board.getTile(2, 2).getState(), "Dlaždica (2,2) by mala obsahovať Peg.");
     }
 
     @Test
     public void testBoardGeneration() {
-        GameBoard board = new GameBoard(7, 7);
+        GameBoard board = new GameBoard(BoardShape.CLASSIC);
         int pegCount = 0;
 
         for (int row = 0; row < board.getHeight(); row++) {
@@ -29,13 +31,13 @@ class GameBoardTest {
                 }
             }
         }
-        assertEquals(48, pegCount, "By malo byť 48 Pegs na doske.");
+        assertEquals(32, pegCount, "By malo byť 32 Pegs na doske.");
     }
 
     @Test
     public void testValidMoveApplication() {
         /// Kontroluje použitie platného pohybu.
-        GameBoard board = new GameBoard(7, 7);
+        GameBoard board = new GameBoard(BoardShape.CLASSIC);
         Move move = new Move(3, 1, 3, 3);
 
         assertTrue(board.applyMove(move), "Pohyb by mal byť platný a úspešný.");
@@ -46,21 +48,21 @@ class GameBoardTest {
 
     @Test
     public void testGameOverBeginning() {
-        GameBoard board = new GameBoard(7, 7);
+        GameBoard board = new GameBoard(BoardShape.CLASSIC);
         assertFalse(board.isGameOver(), "Hra by nemala byť na začiatku ukončená.");
     }
 
     @Test
     public void testValidMovesList() {
         /// Kontroluje, či zoznam možných ťahov nie je na začiatku hry prázdny a či sú ťahy možné.
-        GameBoard board = new GameBoard(7, 7);
+        GameBoard board = new GameBoard(BoardShape.CLASSIC);
         assertNotNull(board.getValidMoves(), "Zoznam platných pohybov by nemal byť null.");
         assertFalse(board.getValidMoves().isEmpty(), "Na začiatku by mali byť dostupné pohyby.");
     }
 
     @Test
     public void testWinCondition() {
-        GameBoard board = new GameBoard(7, 7);
+        GameBoard board = new GameBoard(BoardShape.CLASSIC);
         for (int row = 0; row < board.getHeight(); row++) {
             for (int col = 0; col < board.getWidth(); col++) {
                 board.tiles[row][col] = new Empty();
@@ -74,7 +76,7 @@ class GameBoardTest {
 
     @Test
     public void testLosingCondition() {
-        GameBoard board = new GameBoard(7, 7);
+        GameBoard board = new GameBoard(BoardShape.CLASSIC);
         for (int row = 0; row < board.getHeight(); row++) {
             for (int col = 0; col < board.getWidth(); col++) {
                 board.tiles[row][col] = new Empty();
@@ -87,7 +89,7 @@ class GameBoardTest {
 
     @Test
     public void testInvalidMoveApplication() {
-        GameBoard board = new GameBoard(7, 7);
+        GameBoard board = new GameBoard(BoardShape.CLASSIC);
         Move invalidMove = new Move(3, 1, 3, 2);
 
         assertFalse(board.applyMove(invalidMove), "Nesprávny pohyb by mal byť zamietnutý.");
@@ -97,7 +99,7 @@ class GameBoardTest {
 
     @Test
     public void testGameStateAfterNoMoves() {
-        GameBoard board = new GameBoard(7, 7);
+        GameBoard board = new GameBoard(BoardShape.CLASSIC);
         for (int row = 0; row < board.getHeight(); row++) {
             for (int col = 0; col < board.getWidth(); col++) {
                 board.tiles[row][col] = new Empty();
@@ -113,7 +115,7 @@ class GameBoardTest {
     /// ======
     @Test
     public void testPegCountAfterMove() {
-        GameBoard board = new GameBoard(7, 7);
+        GameBoard board = new GameBoard(BoardShape.CLASSIC);
         int initialPegCount = countPegs(board);
         Move move = new Move(3, 1, 3, 3);
         assertTrue(board.applyMove(move), "Pohyb by mal byť platný.");
@@ -135,7 +137,7 @@ class GameBoardTest {
 
     @Test
     public void testGameNotOverAfterOneMove() {
-        GameBoard board = new GameBoard(7, 7);
+        GameBoard board = new GameBoard(BoardShape.CLASSIC);
         Move move = new Move(3, 1, 3, 3);
         assertTrue(board.applyMove(move), "Pohyb by mal byť platný.");
         assertFalse(board.isGameOver(), "Po jednom ťahu by hra nemala byť ukončená.");

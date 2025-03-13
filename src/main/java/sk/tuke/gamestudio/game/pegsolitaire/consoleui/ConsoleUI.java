@@ -3,6 +3,7 @@ package sk.tuke.gamestudio.game.pegsolitaire.consoleui;
 import sk.tuke.gamestudio.entity.Comment;
 import sk.tuke.gamestudio.entity.Rating;
 import sk.tuke.gamestudio.entity.Score;
+import sk.tuke.gamestudio.game.pegsolitaire.core.BoardShape;
 import sk.tuke.gamestudio.game.pegsolitaire.core.GameBoard;
 import sk.tuke.gamestudio.game.pegsolitaire.core.GameState;
 import sk.tuke.gamestudio.game.pegsolitaire.core.Move;
@@ -19,7 +20,7 @@ public class ConsoleUI {
     private final CommentService commentService;
     private final RatingService ratingService;
     private final ScoreService scoreService;
-    private int width, height;
+    private BoardShape boardShape;
 
     public ConsoleUI() {
         inputHandler = new InputHandler();
@@ -36,7 +37,9 @@ public class ConsoleUI {
         System.out.println("  ");
         askForRules();
         System.out.println("  ");
-        askForGameLevel();
+        askForBoardShape();
+        GameBoard board = new GameBoard(boardShape);
+        play(board);
     }
 
     public void play(GameBoard board) {
@@ -54,10 +57,10 @@ public class ConsoleUI {
         }
         renderer.drawBoard(board);
         if (board.getState() == GameState.WON) {
-            System.out.println("Congratulations! You won!");
+            System.out.println("\u001B[31mCongratulations! You won!\u001B[0m");
             scoreSubmission(board);
         } else {
-            System.out.println("Game Over! No valid moves.");
+            System.out.println("\u001B[31mGame Over! No valid moves.\u001B[0m");
             scoreSubmission(board);
         }
         gameFeedback();
@@ -67,9 +70,12 @@ public class ConsoleUI {
 
     private void startNewGame() {
         System.out.print("Do you want to start a new game (Y/N)? ");
+        System.out.println("  ");
         String response = scanner.nextLine().trim().toUpperCase();
         if (response.equals("Y")) {
-            play(new GameBoard(width, height));
+            askForBoardShape();
+            GameBoard board = new GameBoard(boardShape);
+            play(board);
         } else {
             System.out.println("Exiting game...");
         }
@@ -106,7 +112,7 @@ public class ConsoleUI {
 
         System.out.print("Would you like to rate the game (1-5)? (Y/N): ");
         if (scanner.nextLine().trim().equalsIgnoreCase("Y")) {
-            int rating = -1;
+            int rating;
             while (true) {
                 System.out.print("Enter your rating (1-5): ");
                 try {
@@ -155,33 +161,32 @@ public class ConsoleUI {
         } while (true);
     }
 
-    private void askForGameLevel() {
-        String choice;
-        do {
-            System.out.println("Choose the game level (More difficult level = Higher score):");
-            System.out.println("1. Easy (4x4)");
-            System.out.println("2. Medium (6x6)");
-            System.out.println("3. Hard (8x8)");
-            System.out.print("Enter your choice (1/2/3): ");
-
-            choice = scanner.nextLine().trim();
-            if ("1".equals(choice)) {
-                width = 4;
-                height = 4;
-                break;
-            } else if ("2".equals(choice)) {
-                width = 6;
-                height = 6;
-                break;
-            } else if ("3".equals(choice)) {
-                width = 8;
-                height = 8;
-                break;
-            } else {
-                System.out.println("Invalid choice. Please choose a valid option (1/2/3) -> ");
+    private void askForBoardShape() {
+        while (true) {
+            System.out.println("Choose the board shape(More difficult level = Higher score):");
+            System.out.println("1. Triangle(Easy)");
+            System.out.println("2. Classic(Medium)");
+            System.out.println("3. European(Hard)");
+            System.out.println("  ");
+            System.out.print("Enter your choice (1/2/3) -> ");
+            String choice = scanner.nextLine().trim();
+            if (choice.isEmpty()) {
+                System.out.println("Input cannot be empty! Try again.");
+                continue;
             }
-        } while (true);
-        GameBoard board = new GameBoard(width, height);
-        play(board);
+            switch (choice) {
+                case "1":
+                    boardShape = BoardShape.TRIANGULAR;
+                    return;
+                case "2":
+                    boardShape = BoardShape.CLASSIC;
+                    return;
+                case "3":
+                    boardShape = BoardShape.EUROPEAN;
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please enter 1, 2, or 3.");
+            }
+        }
     }
 }

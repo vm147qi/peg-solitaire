@@ -8,32 +8,40 @@ public class GameBoard {
     public int height;
     public Tile[][] tiles;
     private GameState state;
+    private BoardShape shape;
 
-    public GameBoard(int width, int height) {
+
+    public GameBoard(int width, int height, BoardShape shape) {
         this.width = width;
         this.height = height;
-        this.tiles = new Tile[height][width];
+        this.shape = shape;
         initializeBoard();
         this.state = GameState.PLAYING;
     }
 
-    public int getHeight() {return height;}
-
-    public Tile getTile(int row, int col) {
-        return tiles[row][col];
+    public int getHeight() {
+        return height;
     }
 
-    public int getWidth() {return width;}
+    public Tile getTile(int row, int col) {
+        if (isValidBorders(row, col)) {
+            return tiles[row][col];
+        }
+        return null;
+    }
+
+    public int getWidth() {
+        return width;
+    }
 
     public GameState getState() {
         if (hasWon()) {
-            state = GameState.WON;
-        } else if (isGameOver()) {
-            state = GameState.NO_MOVES;
-        } else {
-            state = GameState.PLAYING;
+            return GameState.WON;
         }
-        return state;
+        if (isGameOver()) {
+            return GameState.NO_MOVES;
+        }
+        return GameState.PLAYING;
     }
 
 
@@ -62,7 +70,8 @@ public class GameBoard {
         int countPeg = 0;
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
-                if (tiles[row][col].getState() == TileState.PEG) {
+                Tile tile = tiles[row][col];
+                if (tile != null && tile.getState() == TileState.PEG) {
                     countPeg++;
                 }
             }
@@ -73,9 +82,9 @@ public class GameBoard {
     public List<Move> getValidMoves() {
         // TODO: – повертає список усіх можливих ходів. \ vráti zoznam všetkých možných ťahov.
         List<Move> moves = new ArrayList<>();
-        //  int[] directions = {-2, 2};
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
+                if (!isPlayableCell(row, col)) continue;
                 // všetky možné smery cesty
                 if (isValidMove(row, col, row + 2, col)) {
                     moves.add(new Move(row, col, row + 2, col));
@@ -89,42 +98,95 @@ public class GameBoard {
                 if (isValidMove(row, col, row, col - 2)) {
                     moves.add(new Move(row, col, row, col - 2));
                 }
-                if (isValidMove(row, col, row + 2, col + 2)) {
-                    moves.add(new Move(row, col, row + 2, col + 2));
-                }
-                if (isValidMove(row, col, row - 2, col - 2)) {
-                    moves.add(new Move(row, col, row - 2, col - 2));
+                if (shape == BoardShape.TRIANGULAR) {
+                    if (isValidMove(row, col, row + 2, col + 2)) {
+                        moves.add(new Move(row, col, row + 2, col + 2));
+                    }
+                    if (isValidMove(row, col, row - 2, col - 2)) {
+                        moves.add(new Move(row, col, row - 2, col - 2));
+                    }
                 }
             }
         }
         return moves;
     }
 
+    private boolean isPlayableCell(int row, int col) {
+        if (shape == BoardShape.TRIANGULAR) {
+            return col <= row;
+        }
+        return true;
+    }
 
-    /// ДОДАТИ В ПДФ ///
     public boolean isValidBorders(int row, int col) {
         // TODO: Перевіряє, чи знаходяться координати в межах поля \ Skontroluje, či sa súradnice nachádzajú v poli
         return row >= 0 && row < height && col >= 0 && col < width;
     }
 
-    /// ДОДАТИ В ПДФ ///
     private boolean isValidMove(int fromRow, int fromCol, int toRow, int toCol) {
         // TODO: Перевіряє, чи можливий конкретний хід \ Skontroluje, či je možné vykonať konkrétny ťah.
         return new Move(fromRow, fromCol, toRow, toCol).isValid(this);
     }
 
-    /// ДОДАТИ В ПДФ ///
     private void initializeBoard() {
         // TODO: Ініціалізує дошку, заповнюючи її фішками, крім центральної клітинки
         // TODO: Inicializuje hraciu plochu tým, že ju zaplní figúrkami okrem centrálneho štvorca.
-        for (int row = 0; row < height; row++) {
-            for (int col = 0; col < width; col++) {
-                tiles[row][col] = new Peg();
-            }
+        tiles = new Tile[height][width];
+        switch (shape) {
+            case CLASSIC:
+                initializeClassicBoard();
+                break;
+            case EUROPEAN:
+                initializeEuropeanBoard();
+                break;
+            case TRIANGULAR:
+                initializeTriangularBoard();
+                break;
         }
-        tiles[height / 2][width / 2] = new Empty(); // Centrum
     }
 
+    private void initializeClassicBoard() {
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                if ((row < 2 || row > 4) && (col < 2 || col > 4)) {
+                    tiles[row][col] = new NonPlayable();
+                } else {
+                    tiles[row][col] = new Peg();
+                }
+            }
+        }
+        tiles[3][3] = new Empty();//centrum
+    }
+
+    private void initializeEuropeanBoard() {
+        int center = 4;
+        int radius = 4;
+
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                int distSquared = (row - center) * (row - center) + (col - center) * (col - center);
+                if (distSquared <= radius * radius) {
+                    tiles[row][col] = new Peg();
+                } else {
+                    tiles[row][col] = new NonPlayable();
+                }
+            }
+        }
+        tiles[center][center] = new Empty();
+    }
+
+    private void initializeTriangularBoard() {
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                if (col <= row) {
+                    tiles[row][col] = new Peg();
+                } else {
+                    tiles[row][col] = new NonPlayable();
+                }
+            }
+        }
+        tiles[0][0] = new Empty();
+    }
 
     /// ДОДАТИ В ПДФ ///
     private boolean hasWon() {
@@ -132,7 +194,8 @@ public class GameBoard {
         int countPeg = 0;
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
-                if (tiles[row][col].getState() == TileState.PEG) {
+                Tile tile = tiles[row][col];
+                if (tile != null && tile.getState() == TileState.PEG) {
                     countPeg++;
                 }
             }
@@ -144,11 +207,33 @@ public class GameBoard {
         int score = 0;
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
-                if (tiles[row][col].getState() == TileState.EMPTY) {
+                Tile tile = tiles[row][col];
+                if (tile != null && tile.getState() == TileState.EMPTY) {
                     score++;
                 }
             }
         }
         return score;
     }
+
+    public GameBoard(BoardShape shape) {
+        this.shape = shape;
+        switch (shape) {
+            case TRIANGULAR:
+                width = 5;
+                height = 5;
+                break;
+            case CLASSIC:
+                width = 7;
+                height = 7;
+                break;
+            case EUROPEAN:
+                width = 9;
+                height = 9;
+                break;
+        }
+        initializeBoard();
+        this.state = GameState.PLAYING;
+    }
+
 }
