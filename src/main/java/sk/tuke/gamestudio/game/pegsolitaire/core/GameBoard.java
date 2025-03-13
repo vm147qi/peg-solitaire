@@ -2,6 +2,7 @@ package sk.tuke.gamestudio.game.pegsolitaire.core;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class GameBoard {
     public int width;
@@ -9,12 +10,25 @@ public class GameBoard {
     public Tile[][] tiles;
     private GameState state;
     private BoardShape shape;
+    private Stack<Move> moveHistory;
 
-
-    public GameBoard(int width, int height, BoardShape shape) {
-        this.width = width;
-        this.height = height;
+    public GameBoard(BoardShape shape) {
         this.shape = shape;
+        switch (shape) {
+            case TRIANGULAR:
+                width = 5;
+                height = 5;
+                break;
+            case CLASSIC:
+                width = 7;
+                height = 7;
+                break;
+            case EUROPEAN:
+                width = 9;
+                height = 9;
+                break;
+        }
+        this.moveHistory = new Stack<>();
         initializeBoard();
         this.state = GameState.PLAYING;
     }
@@ -59,9 +73,26 @@ public class GameBoard {
         tiles[midBoxRow][midBoxCol] = new Empty(); // odstráni skočenu figurku
         tiles[move.getToRow()][move.getToCol()] = new Peg(); // vytvorí nový na novom mieste.
 
+        moveHistory.push(move);
+
         if (isGameOver()) {
             state = GameState.NO_MOVES;
         }
+        return true;
+    }
+
+    public boolean undoMove() {
+        if (moveHistory.isEmpty()) {
+            return false;
+        }
+        Move lastMove = moveHistory.pop();
+
+        int midBoxRow = (lastMove.getFromRow() + lastMove.getToRow()) / 2;
+        int midBoxCol = (lastMove.getFromCol() + lastMove.getToCol()) / 2;
+
+        tiles[lastMove.getFromRow()][lastMove.getFromCol()] = new Peg();
+        tiles[midBoxRow][midBoxCol] = new Peg();
+        tiles[lastMove.getToRow()][lastMove.getToCol()] = new Empty();
         return true;
     }
 
@@ -216,24 +247,8 @@ public class GameBoard {
         return score;
     }
 
-    public GameBoard(BoardShape shape) {
-        this.shape = shape;
-        switch (shape) {
-            case TRIANGULAR:
-                width = 5;
-                height = 5;
-                break;
-            case CLASSIC:
-                width = 7;
-                height = 7;
-                break;
-            case EUROPEAN:
-                width = 9;
-                height = 9;
-                break;
-        }
-        initializeBoard();
-        this.state = GameState.PLAYING;
+    @Override
+    public String toString() {
+        return String.format("GameBoard [%s] (%dx%d) - State: %s", shape, width, height, state);
     }
-
 }

@@ -46,11 +46,21 @@ public class ConsoleUI {
         //  TODO: запускає гру та керує ігровим процесом. \ spustí hru a ovláda hranie.
         while (!board.isGameOver()) {
             renderer.drawBoard(board);
-            Move move = inputHandler.readMove();
+            Move move = inputHandler.readMove(board);
             if (move == null) {
                 System.out.println("Exiting game...");
                 return;
             }
+
+            if (move == InputHandler.UNDO_MOVE) {
+                if (board.undoMove()) {
+                    System.out.println("Last move undone.");
+                    continue;
+                } else {
+                    System.out.println("No moves to undo.");
+                }
+            }
+
             if (!board.applyMove(move)) {
                 System.out.println("Invalid move! Try another move.");
             }
