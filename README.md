@@ -44,5 +44,5 @@ The basic logic of Peg Solitaire is to jump chips in sequence in order to leave 
 no more moves, the game ends with the state NO_MOVES.
 
     Video of the game can be found at the link below -->>
-    https://youtu.be/EhXZxUvmdaM
+    (https://youtu.be/EhXZxUvmdaM)
 ...
