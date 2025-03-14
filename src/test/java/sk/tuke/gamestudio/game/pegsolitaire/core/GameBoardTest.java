@@ -36,7 +36,6 @@ class GameBoardTest {
 
     @Test
     public void testValidMoveApplication() {
-        /// Kontroluje použitie platného pohybu.
         GameBoard board = new GameBoard(BoardShape.CLASSIC);
         Move move = new Move(3, 1, 3, 3);
 
@@ -54,7 +53,6 @@ class GameBoardTest {
 
     @Test
     public void testValidMovesList() {
-        /// Kontroluje, či zoznam možných ťahov nie je na začiatku hry prázdny a či sú ťahy možné.
         GameBoard board = new GameBoard(BoardShape.CLASSIC);
         assertNotNull(board.getValidMoves(), "Zoznam platných pohybov by nemal byť null.");
         assertFalse(board.getValidMoves().isEmpty(), "Na začiatku by mali byť dostupné pohyby.");

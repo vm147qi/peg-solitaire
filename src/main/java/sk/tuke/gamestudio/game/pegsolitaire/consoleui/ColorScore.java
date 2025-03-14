@@ -10,7 +10,6 @@ public class ColorScore {
             "\u001B[36m",
             "\u001B[37m",
     };
-
     public static String getColoredTitle(String title) {
         StringBuilder coloredTitle = new StringBuilder();
         for (int i = 0; i < title.length(); i++) {

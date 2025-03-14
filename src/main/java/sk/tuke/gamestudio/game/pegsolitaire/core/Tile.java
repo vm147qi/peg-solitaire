@@ -8,6 +8,4 @@ public class Tile {
     }
     public TileState getState() {return state;
     }
-    public void setState(TileState state) {this.state = state;
-    }
 }

@@ -9,8 +9,8 @@ public class GameBoard {
     public int height;
     public Tile[][] tiles;
     private GameState state;
-    private BoardShape shape;
-    private Stack<Move> moveHistory;
+    private final BoardShape shape;
+    private final Stack<Move> moveHistory;
 
     public GameBoard(BoardShape shape) {
         this.shape = shape;
@@ -33,9 +33,7 @@ public class GameBoard {
         this.state = GameState.PLAYING;
     }
 
-    public int getHeight() {
-        return height;
-    }
+    public int getHeight() {return height;}
 
     public Tile getTile(int row, int col) {
         if (isValidBorders(row, col)) {
@@ -44,9 +42,7 @@ public class GameBoard {
         return null;
     }
 
-    public int getWidth() {
-        return width;
-    }
+    public int getWidth() {return width;}
 
     public GameState getState() {
         if (hasWon()) {
@@ -62,8 +58,7 @@ public class GameBoard {
     public boolean applyMove(Move move) {
         // TODO: застосовує хід move, змінюючи стан дошки. Повертає true, якщо хід успішний.
         // TODO: použije ťah, čím sa zmení stav hracej plochy. Vracia true, ak je ťah úspešný.
-        if (!move.isValid(this))
-            return false;
+        if (!move.isValid(this)) return false;
 
         // кординати клітинки через яку перестрибуєм / súradnice bunky, ktorú preskakujeme
         int midBoxRow = (move.getFromRow() + move.getToRow()) / 2;
@@ -74,17 +69,12 @@ public class GameBoard {
         tiles[move.getToRow()][move.getToCol()] = new Peg(); // vytvorí nový na novom mieste.
 
         moveHistory.push(move);
-
-        if (isGameOver()) {
-            state = GameState.NO_MOVES;
-        }
+        if (isGameOver()) state = GameState.NO_MOVES;
         return true;
     }
 
     public boolean undoMove() {
-        if (moveHistory.isEmpty()) {
-            return false;
-        }
+        if (moveHistory.isEmpty()) return false;
         Move lastMove = moveHistory.pop();
 
         int midBoxRow = (lastMove.getFromRow() + lastMove.getToRow()) / 2;
@@ -95,51 +85,45 @@ public class GameBoard {
         tiles[lastMove.getToRow()][lastMove.getToCol()] = new Empty();
         return true;
     }
-
+    ///
+    private boolean hasWon() {
+        return getRemainingPegs() == 1;
+    }
     public boolean isGameOver() {
-        // TODO: перевіряє чи закінчилась гра. \ skontroluje, či sa hra skončila.
+        return getRemainingPegs() == 1 || getValidMoves().isEmpty();
+    }
+    private int getRemainingPegs() {
         int countPeg = 0;
-        for (int row = 0; row < height; row++) {
-            for (int col = 0; col < width; col++) {
-                Tile tile = tiles[row][col];
-                if (tile != null && tile.getState() == TileState.PEG) {
-                    countPeg++;
-                }
+        for (Tile[] row : tiles) {
+            for (Tile tile : row) {
+                if (tile != null && tile.getState() == TileState.PEG) countPeg++;
             }
         }
-        return countPeg == 1 || getValidMoves().isEmpty();
+        return countPeg;
     }
-
+    ///
     public List<Move> getValidMoves() {
         // TODO: – повертає список усіх можливих ходів. \ vráti zoznam všetkých možných ťahov.
         List<Move> moves = new ArrayList<>();
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
                 if (!isPlayableCell(row, col)) continue;
-                // všetky možné smery cesty
-                if (isValidMove(row, col, row + 2, col)) {
-                    moves.add(new Move(row, col, row + 2, col));
-                }
-                if (isValidMove(row, col, row - 2, col)) {
-                    moves.add(new Move(row, col, row - 2, col));
-                }
-                if (isValidMove(row, col, row, col + 2)) {
-                    moves.add(new Move(row, col, row, col + 2));
-                }
-                if (isValidMove(row, col, row, col - 2)) {
-                    moves.add(new Move(row, col, row, col - 2));
-                }
+                addValidMove(moves, row, col, row + 2, col);
+                addValidMove(moves, row, col, row - 2, col);
+                addValidMove(moves, row, col, row, col + 2);
+                addValidMove(moves, row, col, row, col - 2);
                 if (shape == BoardShape.TRIANGULAR) {
-                    if (isValidMove(row, col, row + 2, col + 2)) {
-                        moves.add(new Move(row, col, row + 2, col + 2));
-                    }
-                    if (isValidMove(row, col, row - 2, col - 2)) {
-                        moves.add(new Move(row, col, row - 2, col - 2));
-                    }
+                    addValidMove(moves, row, col, row + 2, col + 2);
+                    addValidMove(moves, row, col, row - 2, col - 2);
                 }
             }
         }
         return moves;
+    }
+    private void addValidMove(List<Move> moves, int fromRow, int fromCol, int toRow, int toCol) {
+        if (isValidMove(fromRow, fromCol, toRow, toCol)) {
+            moves.add(new Move(fromRow, fromCol, toRow, toCol));
+        }
     }
 
     private boolean isPlayableCell(int row, int col) {
@@ -219,21 +203,6 @@ public class GameBoard {
         tiles[0][0] = new Empty();
     }
 
-    /// ДОДАТИ В ПДФ ///
-    private boolean hasWon() {
-        /// TODO: Метод для перевірки виграшу \ Metóda overovania výhier
-        int countPeg = 0;
-        for (int row = 0; row < height; row++) {
-            for (int col = 0; col < width; col++) {
-                Tile tile = tiles[row][col];
-                if (tile != null && tile.getState() == TileState.PEG) {
-                    countPeg++;
-                }
-            }
-        }
-        return countPeg == 1;
-    }
-
     public int calculateScore() {
         int score = 0;
         for (int row = 0; row < height; row++) {
@@ -246,7 +215,6 @@ public class GameBoard {
         }
         return score;
     }
-
 
     @Override
     public String toString() {

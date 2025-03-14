@@ -24,7 +24,7 @@ public class Renderer {
                     System.out.print("  ");
                 } else {
                     //  toString() з Peg/Empty
-                    System.out.printf("%2s", tile.toString());
+                    System.out.printf("%2s", tile);
                 }
             }
             System.out.println();

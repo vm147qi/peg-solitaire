@@ -80,7 +80,6 @@ public class ConsoleUI {
         startNewGame();
     }
 
-
     private void startNewGame() {
         System.out.print("Do you want to start a new game (Y/N)? ");
         System.out.println("  ");
@@ -110,7 +109,6 @@ public class ConsoleUI {
         showTopScores();
         System.out.println("  ");
     }
-
 
     private void gameFeedback() {
         System.out.print("Enter your name: ");
