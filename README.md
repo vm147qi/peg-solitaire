@@ -43,6 +43,6 @@ IV. Update and output: After each turn, the game is checked to see if it is over
 The basic logic of Peg Solitaire is to jump chips in sequence in order to leave only one chip on the board. If this is not possible and there are no more moves
 no more moves, the game ends with the state NO_MOVES.
 
-    Video of the game can be found at the link below -->>
-    (https://youtu.be/EhXZxUvmdaM)
+ Video of the game can be found at the link below -->> (https://youtu.be/EhXZxUvmdaM)
+
 ...
