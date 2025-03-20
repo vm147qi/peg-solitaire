@@ -118,8 +118,7 @@ public class ConsoleUI {
     }
 
     private void startNewGame() {
-        System.out.print("Do you want to start a new game (Y/N)? ");
-        System.out.println("  ");
+        System.out.print("Do you want to start a new game (Y/N)? :  ");
         String response = scanner.nextLine().trim().toUpperCase();
         if (response.equals("Y")) {
             askForBoardShape();
