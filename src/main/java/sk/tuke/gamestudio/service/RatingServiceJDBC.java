@@ -35,12 +35,27 @@ public class RatingServiceJDBC implements RatingService {
             statement.setString(1, game);
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
+                    return (int) Math.round(rs.getDouble(1));
+                }
+                return 0;
+            }
+        } catch (SQLException e) {
+            throw new RatingException("Problem selecting rating", e);
+        }
+    }
+
+    public int getVoteCount(String game) {
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) FROM rating WHERE game = ?")) {
+            statement.setString(1, game);
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
                     return rs.getInt(1);
                 }
                 return 0;
             }
         } catch (SQLException e) {
-            throw new RatingException("Problem selecting  rating", e);
+            throw new RatingException("Problem selecting vote count", e);
         }
     }
 
