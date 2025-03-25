@@ -86,7 +86,7 @@ class GameBoardTest {
     }
 
     @Test
-    public void testInvalidMoveApplication() {
+    public void testInvalidMove() {
         GameBoard board = new GameBoard(BoardShape.CLASSIC);
         Move invalidMove = new Move(3, 1, 3, 2);
 
