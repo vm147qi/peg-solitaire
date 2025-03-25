@@ -21,12 +21,12 @@ public class CommentServiceTest {
 
     @Test
     public void testAddComment() {
-        Comment comment = new Comment("Tetris", "Alice", "Great game!", new Date());
+        Comment comment = new Comment("pegsolitaire", "Alice", "Great game!", new Date());
         commentService.addComment(comment);
 
-        List<Comment> comments = commentService.getComments("Tetris");
+        List<Comment> comments = commentService.getComments("pegsolitaiire");
         assertEquals(1, comments.size());
-        assertEquals("Tetris", comments.get(0).getGame());
+        assertEquals("pegsolitaire", comments.get(0).getGame());
         assertEquals("Alice", comments.get(0).getPlayer());
         assertEquals("Great game!", comments.get(0).getComment());
     }
@@ -47,10 +47,10 @@ public class CommentServiceTest {
 
     @Test
     public void testReset() {
-        commentService.addComment(new Comment("Tetris", "Alice", "Great game!", new Date()));
+        commentService.addComment(new Comment("pegsolitaire", "Alice", "Great game!", new Date()));
         commentService.reset();
 
-        List<Comment> comments = commentService.getComments("Tetris");
+        List<Comment> comments = commentService.getComments("pegsolitaire");
         assertTrue(comments.isEmpty());
     }
 }

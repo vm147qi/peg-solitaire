@@ -18,7 +18,6 @@ public class RatingServiceTest {
     @Test
     void testSetRating() {
         Rating rating = new Rating("game1", "player1", 5, new java.util.Date());
-
         try {
             ratingService.setRating(rating);
         } catch (RatingException e) {
@@ -31,6 +30,21 @@ public class RatingServiceTest {
         try {
             int averageRating = ratingService.getAverageRating("game1");
             assertEquals(0, averageRating);
+        } catch (RatingException e) {
+            fail("Expected no exception, but got: " + e.getMessage());
+        }
+    }
+
+    @Test
+    void testGetVoteCount() {
+        try {
+            assertEquals(0, ratingService.getVoteCount("game1"), "Vote count should be 0 initially");
+
+            ratingService.setRating(new Rating("game1", "player1", 5, new java.util.Date()));
+            assertEquals(1, ratingService.getVoteCount("game1"), "Vote count should be 1 after one rating");
+
+            ratingService.setRating(new Rating("game1", "player2", 4, new java.util.Date()));
+            assertEquals(2, ratingService.getVoteCount("game1"), "Vote count should be 2 after two ratings");
         } catch (RatingException e) {
             fail("Expected no exception, but got: " + e.getMessage());
         }

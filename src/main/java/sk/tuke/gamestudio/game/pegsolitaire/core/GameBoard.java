@@ -54,13 +54,9 @@ public class GameBoard {
         return GameState.PLAYING;
     }
 
-
     public boolean applyMove(Move move) {
-        // TODO: застосовує хід move, змінюючи стан дошки. Повертає true, якщо хід успішний.
-        // TODO: použije ťah, čím sa zmení stav hracej plochy. Vracia true, ak je ťah úspešný.
         if (!move.isValid(this)) return false;
-
-        // кординати клітинки через яку перестрибуєм / súradnice bunky, ktorú preskakujeme
+        // súradnice bunky, ktorú preskakujeme
         int midBoxRow = (move.getFromRow() + move.getToRow()) / 2;
         int midBoxCol = (move.getFromCol() + move.getToCol()) / 2;
 
@@ -85,13 +81,16 @@ public class GameBoard {
         tiles[lastMove.getToRow()][lastMove.getToCol()] = new Empty();
         return true;
     }
+
     ///
     private boolean hasWon() {
         return getRemainingPegs() == 1;
     }
+
     public boolean isGameOver() {
         return getRemainingPegs() == 1 || getValidMoves().isEmpty();
     }
+
     private int getRemainingPegs() {
         int countPeg = 0;
         for (Tile[] row : tiles) {
@@ -102,8 +101,9 @@ public class GameBoard {
         return countPeg;
     }
     ///
+
     public List<Move> getValidMoves() {
-        // TODO: – повертає список усіх можливих ходів. \ vráti zoznam všetkých možných ťahov.
+        //vráti zoznam všetkých možných ťahov.
         List<Move> moves = new ArrayList<>();
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
@@ -134,18 +134,15 @@ public class GameBoard {
     }
 
     public boolean isValidBorders(int row, int col) {
-        // TODO: Перевіряє, чи знаходяться координати в межах поля \ Skontroluje, či sa súradnice nachádzajú v poli
         return row >= 0 && row < height && col >= 0 && col < width;
     }
 
     private boolean isValidMove(int fromRow, int fromCol, int toRow, int toCol) {
-        // TODO: Перевіряє, чи можливий конкретний хід \ Skontroluje, či je možné vykonať konkrétny ťah.
         return new Move(fromRow, fromCol, toRow, toCol).isValid(this);
     }
 
     private void initializeBoard() {
-        // TODO: Ініціалізує дошку, заповнюючи її фішками, крім центральної клітинки
-        // TODO: Inicializuje hraciu plochu tým, že ju zaplní figúrkami okrem centrálneho štvorca.
+        //Inicializuje hraciu plochu tým, že ju zaplní figúrkami okrem centrálneho štvorca.
         tiles = new Tile[height][width];
         switch (shape) {
             case CLASSIC:

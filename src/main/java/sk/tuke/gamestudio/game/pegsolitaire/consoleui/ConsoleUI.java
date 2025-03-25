@@ -45,7 +45,7 @@ public class ConsoleUI {
     }
 
     public void play(GameBoard board) {
-        //  TODO: запускає гру та керує ігровим процесом. \ spustí hru a ovláda hranie.
+        //spustí hru a ovláda hranie.
         long startTime = System.currentTimeMillis();
         int moveCount = 0;
 

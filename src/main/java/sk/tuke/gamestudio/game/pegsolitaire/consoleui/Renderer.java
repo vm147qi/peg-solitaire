@@ -6,7 +6,7 @@ import sk.tuke.gamestudio.game.pegsolitaire.core.Tile;
 
 public class Renderer {
     public void drawBoard(GameBoard board) {
-        // TODO малює поточний стан дошки в консолі. \ vykreslí aktuálny stav dosky v konzole.
+        //vykreslí aktuálny stav dosky v konzole.
 
         //  číslo stĺpca
         System.out.print("   ");
@@ -19,11 +19,10 @@ public class Renderer {
             System.out.printf("%2d ", row);
             for (int col = 0; col < board.getWidth(); col++) {
                 Tile tile = board.getTile(row, col);
-                // prazdny peg
+                //
                 if (tile == null || tile instanceof NonPlayable) {
                     System.out.print("  ");
                 } else {
-                    //  toString() з Peg/Empty
                     System.out.printf("%2s", tile);
                 }
             }

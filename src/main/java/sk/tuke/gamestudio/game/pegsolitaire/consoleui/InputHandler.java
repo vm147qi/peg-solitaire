@@ -18,7 +18,7 @@ public class InputHandler {
     }
 
     public Move readMove(GameBoard board) {
-        // TODO – отримує введення користувача та перетворює його на хід \ prijíma vstup od používateľa a konvertuje ho na pohyb
+        //prijíma vstup od používateľa a konvertuje ho na pohyb
         Pattern pattern = Pattern.compile("(\\d)(\\d)\\s(\\d)(\\d)|[UE]");
         while (true) {
             System.out.println(board);
@@ -29,7 +29,7 @@ public class InputHandler {
                 return null;
             }
 
-            if (input.equals("U")) {
+            if (input.equals("U")) { // undo
                 return UNDO_MOVE;
             }
 
