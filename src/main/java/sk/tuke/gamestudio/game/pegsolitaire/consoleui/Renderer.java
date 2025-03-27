@@ -19,7 +19,7 @@ public class Renderer {
             System.out.printf("%2d ", row);
             for (int col = 0; col < board.getWidth(); col++) {
                 Tile tile = board.getTile(row, col);
-                //
+                // prazdne mesto
                 if (tile == null || tile instanceof NonPlayable) {
                     System.out.print("  ");
                 } else {

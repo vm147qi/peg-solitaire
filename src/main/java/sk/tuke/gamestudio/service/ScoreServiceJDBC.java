@@ -14,6 +14,7 @@ public class ScoreServiceJDBC implements ScoreService {
     public static final String DELETE = "DELETE FROM score";
     public static final String INSERT = "INSERT INTO score (game, player, points, playedOn) VALUES (?, ?, ?, ?)";
 
+
     @Override
     public void addScore(Score score) {
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
