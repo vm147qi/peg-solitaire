@@ -18,6 +18,8 @@ public class Score implements Serializable {
     private String game;
     private String player;
     private int points;
+
+    @Temporal(TemporalType.TIMESTAMP)
     private Date playedOn;
 
     public Score() {}

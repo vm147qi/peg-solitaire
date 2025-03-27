@@ -1,5 +1,6 @@
 package sk.tuke.gamestudio.game.pegsolitaire.consoleui;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import sk.tuke.gamestudio.entity.Comment;
 import sk.tuke.gamestudio.entity.Rating;
 import sk.tuke.gamestudio.entity.Score;
@@ -14,20 +15,34 @@ public class ConsoleUI {
     private final InputHandler inputHandler;
     private final Renderer renderer;
     private final Scanner scanner;
-    private final CommentService commentService;
-    private final RatingService ratingService;
-    private final ScoreService scoreService;
     private BoardShape boardShape;
     private String player;
+
+    protected GameBoard board;
+
+    private CommentService commentService;
+    private RatingService ratingService;
+    private ScoreService scoreService;
 
     public ConsoleUI() {
         inputHandler = new InputHandler();
         renderer = new Renderer();
         scanner = new Scanner(System.in);
-        commentService = new CommentServiceJDBC();
-        ratingService = new RatingServiceJDBC();
-        scoreService = new ScoreServiceJDBC();
     }
+
+    @Autowired
+    public void setScoreService(ScoreService scoreService) {
+        this.scoreService = scoreService;
+    }
+    @Autowired
+    public void setRatingService(RatingService ratingService) {
+        this.ratingService = ratingService;
+    }
+    @Autowired
+    public void setCommentService(CommentService commentService) {
+        this.commentService = commentService;
+    }
+
 
     public void startGame() {
         GameTitle.display();
@@ -40,7 +55,7 @@ public class ConsoleUI {
         askForRules();
         System.out.println("  ");
         askForBoardShape();
-        GameBoard board = new GameBoard(boardShape);
+        this.board = new GameBoard(boardShape);
         play(board);
     }
 
@@ -188,9 +203,9 @@ public class ConsoleUI {
         final String YELLOW = "\u001B[33m";
         final String RESET = "\u001B[0m";
         int maxScore = scores.stream().mapToInt(Score::getPoints).max().orElse(0);
-        System.out.println("+------------+--------+-----------------------+");
-        System.out.printf("| %-10s | %-6s | %-19s   |\n", "Player", "Points", "Date");
-        System.out.println("+------------+--------+-----------------------+");
+        System.out.println("+------------+--------+-------------------------+");
+        System.out.printf("| %-10s | %-6s | %-19s     |\n", "Player", "Points", "Date");
+        System.out.println("+------------+--------+-------------------------+");
 
         for (Score score : scores) {
             String playerName = score.getPlayer();
@@ -205,7 +220,7 @@ public class ConsoleUI {
                     score.getPoints(),
                     score.getPlayedOn());
         }
-        System.out.println("+------------+--------+-----------------------+");
+        System.out.println("+------------+--------+-------------------------+");
     }
 
     /// ////comment
@@ -232,19 +247,19 @@ public class ConsoleUI {
         String title = "               --- LATEST COMMENTS ---";
         String colorScore = ColorScore.getColoredTitle(title);
         System.out.println("\n" + colorScore);
-        System.out.println("+------------+---------------------------+-----------------------+");
-        System.out.printf("| %-10s | %-25s | %-19s   |\n", "Player", "Comment", "Date");
-        System.out.println("+------------+---------------------------+-----------------------+");
+        System.out.println("+------------+---------------------------+--------------------------+");
+        System.out.printf("| %-10s | %-25s | %-19s      |\n", "Player", "Comment", "Date");
+        System.out.println("+------------+---------------------------+--------------------------+");
         int count = 0;
         for (Comment comment : comments) {
-            System.out.printf("| %-10s | %-25s | %-19s |\n",
+            System.out.printf("| %-10s | %-25s | %-19s  |\n",
                     comment.getPlayer(),
                     truncateComment(comment.getComment(), 25),
                     comment.getCommentedOn());
             count++;
             if (count >= 3) break;
         }
-        System.out.println("+------------+---------------------------+-----------------------+");
+        System.out.println("+------------+---------------------------+--------------------------+");
     }
 
     private String truncateComment(String comment, int maxLength) {

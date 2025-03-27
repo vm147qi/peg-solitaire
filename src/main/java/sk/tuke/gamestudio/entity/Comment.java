@@ -18,6 +18,8 @@ public class Comment implements Serializable {
     private String game;
     private String player;
     private String comment;
+
+    @Temporal(TemporalType.TIMESTAMP)
     private Date commentedOn;
 
     public Comment() {}

@@ -19,6 +19,8 @@ public class Rating implements Serializable {
     private String game;
     private String player;
     private int rating;
+
+    @Temporal(TemporalType.TIMESTAMP)
     private Date ratedOn;
 
     public Rating() {}
