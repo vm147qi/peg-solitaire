@@ -203,9 +203,9 @@ public class ConsoleUI {
         final String YELLOW = "\u001B[33m";
         final String RESET = "\u001B[0m";
         int maxScore = scores.stream().mapToInt(Score::getPoints).max().orElse(0);
-        System.out.println("+------------+--------+-------------------------+");
-        System.out.printf("| %-10s | %-6s | %-19s     |\n", "Player", "Points", "Date");
-        System.out.println("+------------+--------+-------------------------+");
+        System.out.println("+------------+--------+------------------------------+");
+        System.out.printf("| %-10s | %-6s | %-19s          |\n", "Player", "Points", "Date");
+        System.out.println("+------------+--------+------------------------------+");
 
         for (Score score : scores) {
             String playerName = score.getPlayer();
@@ -220,7 +220,7 @@ public class ConsoleUI {
                     score.getPoints(),
                     score.getPlayedOn());
         }
-        System.out.println("+------------+--------+-------------------------+");
+        System.out.println("+------------+--------+------------------------------+");
     }
 
     /// ////comment
@@ -247,9 +247,9 @@ public class ConsoleUI {
         String title = "               --- LATEST COMMENTS ---";
         String colorScore = ColorScore.getColoredTitle(title);
         System.out.println("\n" + colorScore);
-        System.out.println("+------------+---------------------------+--------------------------+");
-        System.out.printf("| %-10s | %-25s | %-19s      |\n", "Player", "Comment", "Date");
-        System.out.println("+------------+---------------------------+--------------------------+");
+        System.out.println("+------------+---------------------------+-------------------------------+");
+        System.out.printf("| %-10s | %-25s | %-19s           |\n", "Player", "Comment", "Date");
+        System.out.println("+------------+---------------------------+-------------------------------+");
         int count = 0;
         for (Comment comment : comments) {
             System.out.printf("| %-10s | %-25s | %-19s  |\n",
@@ -259,7 +259,7 @@ public class ConsoleUI {
             count++;
             if (count >= 3) break;
         }
-        System.out.println("+------------+---------------------------+--------------------------+");
+        System.out.println("+------------+---------------------------+-------------------------------+");
     }
 
     private String truncateComment(String comment, int maxLength) {

@@ -1,0 +1,20 @@
+
+##GET http://localhost:8080/api/rating/PegSolitaire/average
+##Accept: application/json
+
+##GET http://localhost:8080/api/rating/PegSolitaire/votes
+##Accept: application/json
+
+GET http://localhost:8080/api/rating/PegSolitaire/MARRY
+Accept: application/json
+
+###
+POST http://localhost:8080/api/rating
+Content-Type: application/json
+
+{
+  "game": "PegSolitaire",
+  "player": "MARRY",
+  "rating": 5,
+  "ratedOn": "2024-03-27T14:00:00"
+}

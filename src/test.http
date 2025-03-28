@@ -1,0 +1,54 @@
+###
+GET http://localhost:8080/api/score/PegSolitaire
+Accept: application/json
+
+###
+
+###
+POST http://localhost:8080/api/score
+Content-Type: application/json
+
+{
+  "game": "PegSolitaire",
+  "player": "VERONIKA",
+  "points": 151,
+  "playedOn": "2024-03-27T15:00:00"
+}
+
+###
+
+###
+GET http://localhost:8080/api/comment/PegSolitaire
+Accept: application/json
+
+###
+
+###
+POST http://localhost:8080/api/comment
+Content-Type: application/json
+
+{
+  "game": "PegSolitaire",
+  "player": "VERONIKA",
+  "comment": "INTERESTNG",
+  "commentedOn": "2024-03-27T15:30:00"
+}
+
+###
+
+###
+GET http://localhost:8080/api/rating/PegSolitaire/VERONIKA
+Accept: application/json
+
+###
+
+###
+POST http://localhost:8080/api/rating
+Content-Type: application/json
+
+{
+  "game": "PegSolitaire",
+  "player": "VERONIKA",
+  "rating": 5,
+  "ratedOn": "2024-03-27T14:00:00"
+}

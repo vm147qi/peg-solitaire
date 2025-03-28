@@ -1,0 +1,14 @@
+
+GET http://localhost:8080/api/comment/PegSolitaire
+Accept: application/json
+
+###
+POST http://localhost:8080/api/comment
+Content-Type: application/json
+
+{
+  "game": "PegSolitaire",
+  "player": "Veronika",
+  "comment": "Cry!",
+  "commentedOn": "2025-03-27T14:00:00"
+}
