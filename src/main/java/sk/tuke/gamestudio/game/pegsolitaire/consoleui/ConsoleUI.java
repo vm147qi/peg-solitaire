@@ -1,7 +1,6 @@
 package sk.tuke.gamestudio.game.pegsolitaire.consoleui;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import sk.tuke.gamestudio.entity.Comment;
 import sk.tuke.gamestudio.entity.Rating;
 import sk.tuke.gamestudio.entity.Score;
@@ -31,14 +30,17 @@ public class ConsoleUI {
         scanner = new Scanner(System.in);
     }
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     public void setScoreService(ScoreService scoreService) {
         this.scoreService = scoreService;
     }
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     public void setRatingService(RatingService ratingService) {
         this.ratingService = ratingService;
     }
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     public void setCommentService(CommentService commentService) {
         this.commentService = commentService;
