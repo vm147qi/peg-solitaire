@@ -24,7 +24,7 @@ public class CommentServiceTest {
         Comment comment = new Comment("pegsolitaire", "Alice", "Great game!", new Date());
         commentService.addComment(comment);
 
-        List<Comment> comments = commentService.getComments("pegsolitaiire");
+        List<Comment> comments = commentService.getComments("pegsolitaire");
         assertEquals(1, comments.size());
         assertEquals("pegsolitaire", comments.get(0).getGame());
         assertEquals("Alice", comments.get(0).getPlayer());

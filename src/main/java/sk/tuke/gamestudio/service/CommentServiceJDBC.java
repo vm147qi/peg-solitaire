@@ -13,8 +13,8 @@ public class CommentServiceJDBC implements CommentService{
     private static final String USER = "postgres";
     private static final String PASSWORD = "postgres";
 
-    private static final String INSERT = "INSERT INTO comment (game, player, comment, commentedOn) VALUES (?, ?, ?, ?)";
-    private static final String SELECT = "SELECT game, player, comment, commentedOn FROM comment WHERE game = ? ORDER BY commentedOn DESC";
+    private static final String INSERT = "INSERT INTO comment (game, player, comment, commented_on) VALUES (?, ?, ?, ?)";
+    private static final String SELECT = "SELECT game, player, comment, commented_on FROM comment WHERE game = ? ORDER BY commented_on DESC";
     private static final String DELETE = "DELETE FROM comment";
 
     @Override

@@ -1,6 +1,7 @@
 package sk.tuke.gamestudio.game.pegsolitaire.consoleui;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import sk.tuke.gamestudio.entity.Comment;
 import sk.tuke.gamestudio.entity.Rating;
 import sk.tuke.gamestudio.entity.Score;
@@ -75,6 +76,7 @@ public class ConsoleUI {
             if (move == InputHandler.UNDO_MOVE) {
                 if (board.undoMove()) {
                     System.out.println("Last move undone.");
+                    MusicalGame.playSound("move.wav");
                 } else {
                     System.out.println("No moves to undo.");
                 }
@@ -83,6 +85,7 @@ public class ConsoleUI {
 
             if (board.applyMove(move)) {
                 moveCount++;
+                MusicalGame.playSound("move.wav");
             } else {
                 System.out.println("Invalid move! Try another move.");
             }
@@ -91,8 +94,10 @@ public class ConsoleUI {
             renderer.drawBoard(board);
             if (board.getState() == GameState.WON) {
                 System.out.println("\u001B[31mCongratulations! You won!\u001B[0m");
+                MusicalGame.playSound("win.wav");
             } else {
                 System.out.println("\u001B[31mGame Over! No valid moves.\u001B[0m");
+                MusicalGame.playSound("lose.wav");
             }
         }
         showGameStatistics(board, startTime, moveCount);
@@ -203,9 +208,9 @@ public class ConsoleUI {
         final String YELLOW = "\u001B[33m";
         final String RESET = "\u001B[0m";
         int maxScore = scores.stream().mapToInt(Score::getPoints).max().orElse(0);
-        System.out.println("+------------+--------+------------------------------+");
-        System.out.printf("| %-10s | %-6s | %-19s          |\n", "Player", "Points", "Date");
-        System.out.println("+------------+--------+------------------------------+");
+        System.out.println("+------------+--------+-------------------------------+");
+        System.out.printf("| %-10s | %-6s | %-19s           |\n", "Player", "Points", "Date");
+        System.out.println("+------------+--------+-------------------------------+");
 
         for (Score score : scores) {
             String playerName = score.getPlayer();
@@ -220,7 +225,7 @@ public class ConsoleUI {
                     score.getPoints(),
                     score.getPlayedOn());
         }
-        System.out.println("+------------+--------+------------------------------+");
+        System.out.println("+------------+--------+-------------------------------+");
     }
 
     /// ////comment
@@ -247,9 +252,9 @@ public class ConsoleUI {
         String title = "               --- LATEST COMMENTS ---";
         String colorScore = ColorScore.getColoredTitle(title);
         System.out.println("\n" + colorScore);
-        System.out.println("+------------+---------------------------+-------------------------------+");
-        System.out.printf("| %-10s | %-25s | %-19s           |\n", "Player", "Comment", "Date");
-        System.out.println("+------------+---------------------------+-------------------------------+");
+        System.out.println("+------------+---------------------------+--------------------------------+");
+        System.out.printf("| %-10s | %-25s | %-19s            |\n", "Player", "Comment", "Date");
+        System.out.println("+------------+---------------------------+--------------------------------+");
         int count = 0;
         for (Comment comment : comments) {
             System.out.printf("| %-10s | %-25s | %-19s  |\n",
@@ -259,7 +264,7 @@ public class ConsoleUI {
             count++;
             if (count >= 3) break;
         }
-        System.out.println("+------------+---------------------------+-------------------------------+");
+        System.out.println("+------------+---------------------------+--------------------------------+");
     }
 
     private String truncateComment(String comment, int maxLength) {
