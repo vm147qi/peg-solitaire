@@ -6,6 +6,6 @@ public class Peg extends Tile {
     }
     @Override
     public String toString() {
-        return "●";
+        return "\u001B[33m●\u001B[0m";
     }
 }
