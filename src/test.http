@@ -10,8 +10,8 @@ Content-Type: application/json
 
 {
   "game": "PegSolitaire",
-  "player": "VERONIKA",
-  "points": 20,
+  "player": "LOLA",
+  "points": 55,
   "playedOn": "2024-03-27T15:00:00"
 }
 
@@ -29,15 +29,15 @@ Content-Type: application/json
 
 {
   "game": "PegSolitaire",
-  "player": "VERONIKA",
-  "comment": "INTERESTNG",
+  "player": "LOLA",
+  "comment": "INTERESTNG!!!!",
   "commentedOn": "2024-03-27T15:30:00"
 }
 
 ###
 
 ###
-GET http://localhost:8080/api/rating/PegSolitaire/VERONIKA
+GET http://localhost:8080/api/rating/PegSolitaire/LOLA
 Accept: application/json
 
 ###
@@ -48,7 +48,7 @@ Content-Type: application/json
 
 {
   "game": "PegSolitaire",
-  "player": "VERONIKA",
-  "rating": 5,
+  "player": "LOLA",
+  "rating": 4,
   "ratedOn": "2024-03-27T14:00:00"
 }
