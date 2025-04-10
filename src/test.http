@@ -11,7 +11,7 @@ Content-Type: application/json
 {
   "game": "PegSolitaire",
   "player": "LOLA",
-  "points": 55,
+  "points": 45,
   "playedOn": "2024-03-27T15:00:00"
 }
 

@@ -33,10 +33,6 @@ public class GameBoard {
         this.state = GameState.PLAYING;
     }
 
-    /*public BoardShape getBoardShape() {
-        return this.shape;
-    }*/
-
     public int getHeight() {return height;}
 
     public Tile getTile(int row, int col) {

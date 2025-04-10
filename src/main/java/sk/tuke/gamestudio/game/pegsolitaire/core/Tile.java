@@ -6,6 +6,8 @@ public class Tile {
     public Tile(TileState state) {
         this.state = state;
     }
-    public TileState getState() {return state;
+    public TileState getState() {
+        return state;
     }
+
 }
