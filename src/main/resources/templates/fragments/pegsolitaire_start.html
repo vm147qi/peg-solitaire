@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Start Game</title>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <style>
+
+        body {
+            background-image: url('/images/mainbackround.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            text-shadow: 2px 2px 4px black;
+            overflow: hidden;
+        }
+
+
+        #press-enter {
+            position: absolute;
+            bottom: 0;
+            font-size: 28px;
+            animation: blink 1s step-start 0s infinite;
+            z-index: 2;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+
+        .side-peg {
+            position: absolute;
+            bottom: -20vh;
+            width: 60vw;
+            height: 120vh;
+            background-size: contain;
+            background-repeat: no-repeat;
+            transform-origin: center bottom;
+            transition: transform 0.3s ease;
+            z-index: 1;
+            opacity: 0.95;
+        }
+        .side-peg.left {
+            left: -42vw;
+            background-image: url('/images/boypeg.png');
+            transform: scaleX(-1);
+        }
+        .side-peg.right {
+            right: -42vw;
+            background-image: url('/images/girlpeg.png');
+        }
+        .side-peg.left:hover {
+            transform: scaleX(-1) rotateX(30deg) translateY(-40px) translateZ(-50px);
+        }
+        .side-peg.right:hover {
+            transform: rotateX(30deg) translateY(-40px) translateZ(-50px);
+        }
+
+    </style>
+</head>
+<body>
+
+
+<div class="side-peg left"></div>
+<p id="press-enter">Press Enter to Start</p>
+<div class="side-peg right"></div>
+
+<canvas id="particles"></canvas>
+
+<script>
+
+    const canvas = document.getElementById('particles');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    let particles = [];
+    for (let i = 0; i < 100; i++) {
+        particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 3,
+            dx: (Math.random() - 0.5) * 0.5,
+            dy: (Math.random() - 0.5) * 0.5
+        });
+    }
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(255,255,255,0.5)';
+            ctx.fill();
+            p.x += p.dx;
+            p.y += p.dy;
+            if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+            if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+        });
+        requestAnimationFrame(animate);
+    }
+    animate();
+
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === "Enter") {
+            window.location.href = "/pegsolitaire/menu";
+        }
+    });
+
+</script>
+</body>
+</html>

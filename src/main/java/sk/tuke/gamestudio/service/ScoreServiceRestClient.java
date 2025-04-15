@@ -14,7 +14,6 @@ public class ScoreServiceRestClient implements ScoreService {
 
     @Autowired
     private RestTemplate restTemplate;
-    //private RestTemplate restTemplate = new RestTemplate();
 
     @Override
     public void addScore(Score score) {

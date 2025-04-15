@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>PegSolitaire Menu</title>
+    <link rel="stylesheet" type="text/css" href="/css/styleMenu.css">
+    <style>
+
+    </style>
+</head>
+<body>
+
+<div class="footer-text">© 2025 Mukosii. Peg Solitaire.</div>
+
+
+<div class="top-border"></div>
+<div class="bottom-border"></div>
+
+<h1 class="title">Menu</h1>
+
+<a href="/pegsolitaire/comics" class="menu-button" style="text-decoration: none;">
+    <img src="/images/tile.jpg" alt="tile">
+    <span class="menu-button-text">Play</span>
+</a>
+
+
+<a href="/pegsolitaire/rules" class="menu-button" style="top: 35vh; text-decoration: none;">
+    <img src="/images/tile.jpg" alt="tile">
+    <span class="menu-button-text">Rules</span>
+</a>
+
+<a href="/pegsolitaire/leaderboard" class="menu-button" style="top: 48vh; text-decoration: none;">
+    <img src="/images/tile.jpg" alt="tile">
+    <span class="menu-button-text">LeaderBoard</span>
+</a>
+
+<a href="/pegsolitaire/reviews" class="menu-button" style="top: 61vh; text-decoration: none;">
+    <img src="/images/tile.jpg" alt="tile">
+    <span class="menu-button-text">Reviews</span>
+</a>
+
+<a href="/pegsolitaire/exit" class="menu-button" style="top: 74vh; text-decoration: none;">
+    <img src="/images/tile.jpg" alt="tile">
+    <span class="menu-button-text">Exit</span>
+</a>
+
+<div class="side-peg right"></div>
+
+<canvas id="particles"></canvas>
+
+<script>
+    const canvas = document.getElementById('particles');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    let particles = [];
+    for (let i = 0; i < 100; i++) {
+        particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 3,
+            dx: (Math.random() - 0.5) * 0.5,
+            dy: (Math.random() - 0.5) * 0.5
+        });
+    }
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(255,255,255,0.5)';
+            ctx.fill();
+            p.x += p.dx;
+            p.y += p.dy;
+            if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+            if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+        });
+        requestAnimationFrame(animate);
+    }
+    animate();
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === "Enter") {
+            window.location.href = "/pegsolitaire/menu";
+        }
+    });
+</script>
+</body>
+</html>

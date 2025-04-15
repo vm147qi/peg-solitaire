@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>PegSolitaire LeaderBoard</title>
+    <link rel="stylesheet" type="text/css" href="/css/styleLeaderBoard.css">
+
+    <style>
+        body {
+            background-image: url('/images/rulesbackround.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            text-shadow: 2px 2px 4px black;
+            overflow: hidden;
+        }
+
+        .top-border, .bottom-border {
+            position: absolute;
+            width: 100%;
+            height: 45px;
+            background-color: #4e6e69;
+            z-index: 10;
+        }
+        .top-border {
+            top: 0;
+        }
+
+        .bottom-border {
+            bottom: 0;
+        }
+
+        .footer-text {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+            font-size: 16px;
+            color: white;
+            z-index: 11;
+        }
+
+        .leaderboard-frame {
+            background-image: url('/images/leaderBoard11.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            width: 800px;
+            height: 700px;
+            display: flex;
+            left: 5%;
+            flex-direction: column;
+            padding-top: 110px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .leaderboard-title {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            margin-left: 190px;
+        }
+
+        .leaderboard-table {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .leaderboard-row {
+            display: flex;
+            justify-content: space-between;
+            width: 350px;
+            font-size: 24px;
+            margin-left: 150px;
+        }
+
+        .player-name {
+            text-align: left;
+        }
+
+        .player-score {
+            text-align: right;
+        }
+    </style>
+
+</head>
+<body>
+<div class="top-border"></div>
+<div class="bottom-border"></div>
+
+<div class="footer-text">© 2025 Mukosii. Peg Solitaire.</div>
+
+<div class="leaderboard-frame">
+    <div class="leaderboard-title">LEADERBOARD</div>
+    <div class="leaderboard-table">
+        <div class="leaderboard-row" th:each="score : ${scores}">
+            <div class="player-name" th:text="${score.player}">Player</div>
+            <div class="player-score" th:text="${score.points}">Points</div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

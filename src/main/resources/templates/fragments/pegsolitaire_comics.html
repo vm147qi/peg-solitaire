@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>PegSolitaire Comics</title>
+    <link rel="stylesheet" type="text/css" href="/css/styleComics.css">
+    <style>
+
+
+    </style>
+</head>
+<body>
+
+<div class="footer-text">© 2025 Mukosii. Peg Solitaire.</div>
+
+<canvas id="particles"></canvas>
+
+
+<img src="/images/flower.png" alt="Flower 1" class="flower flower-1a">
+<img src="/images/flower.png" alt="Flower 2" class="flower flower-1b">
+
+<img src="/images/flower.png" alt="Flower 3" class="flower flower-2a">
+<img src="/images/flower.png" alt="Flower 4" class="flower flower-2b">
+
+
+<div class="bush-wrapper bush-wrapper-1">
+    <img src="/images/bush1.png" alt="Bush 1" class="bush bush-1">
+    <img src="/images/bee1.png" alt="Bee 1" class="bee bee-1">
+</div>
+
+<div class="bush-wrapper bush-wrapper-2">
+    <img src="/images/bush2.png" alt="Bush 2" class="bush bush-2">
+    <img src="/images/bee1.png" alt="Bee 2" class="bee bee-2">
+</div>
+
+<div class="top-border"></div>
+<div class="bottom-border"></div>
+
+<button id="skipButton">  Skip  </button>
+<button id="exitButton">  Exit  </button>
+
+
+<div id="pressEnterText">Press Enter to Continue...</div>
+
+
+<div class="comic-frame-container" id="frame1">
+    <div class="comic-panel panel-1">
+        <img src="/images/comics1.png" alt="Comic Scene 1">
+    </div>
+
+    <div class="comic-panel panel-2" id="secondPanel">
+        <img src="/images/comics2.png" alt="Comic Scene 2">
+    </div>
+
+    <div class="comic-panel panel-3" id="thirdPanel">
+        <img src="/images/comics3.png" alt="Comic Scene 3">
+    </div>
+
+    <div class="comic-panel panel-4" id="fourthPanel">
+        <img src="/images/comics4.png" alt="Comic Scene 4">
+    </div>
+</div>
+
+
+<div class="comic-frame-container-2" id="frame2">
+    <div class="comic-panel panel-5" id="fifthPanel">
+        <img src="/images/comics5.png" alt="Comic Scene 5">
+    </div>
+    <div class="comic-panel panel-6" id="sixthPanel">
+        <img src="/images/comics6.png" alt="Comic Scene 6">
+    </div>
+    <div class="comic-panel panel-7" id="seventhPanel">
+        <img src="/images/comics7.png" alt="Comic Scene 7">
+    </div>
+</div>
+
+<script>
+    let currentPanel = 1;
+    document.addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+            if (currentPanel === 1) {
+                document.getElementById("secondPanel").classList.add("show");
+                currentPanel = 2;
+            } else if (currentPanel === 2) {
+                document.getElementById("thirdPanel").classList.add("show");
+                currentPanel = 3;
+            } else if (currentPanel === 3) {
+                document.getElementById("fourthPanel").classList.add("show");
+                currentPanel = 4;
+            } else if (currentPanel === 4) {
+
+                document.getElementById("frame1").style.display = "none";
+                document.getElementById("frame2").style.display = "block";
+                document.getElementById("fifthPanel").classList.add("show");
+                currentPanel = 5;
+        } else if (currentPanel === 5) {
+            document.getElementById("sixthPanel").classList.add("show");
+            currentPanel = 6;
+        }else if (currentPanel === 6) {
+                document.getElementById("seventhPanel").classList.add("show");
+                currentPanel = 7;
+            }  else if (currentPanel === 7) {
+            window.location.href = "/pegsolitaire";
+        }
+        }
+    });
+
+    document.getElementById("skipButton").addEventListener("click", function() {
+        window.location.href = "/pegsolitaire";
+    });
+
+    document.getElementById("exitButton").addEventListener("click", function() {
+        window.location.href = "/pegsolitaire/menu";
+    });
+
+
+    const canvas = document.getElementById('particles');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    let particles = [];
+    for (let i = 0; i < 100; i++) {
+        particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 3,
+            dx: (Math.random() - 0.5) * 0.5,
+            dy: (Math.random() - 0.5) * 0.5
+        });
+    }
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(255,255,255,0.5)';
+            ctx.fill();
+            p.x += p.dx;
+            p.y += p.dy;
+            if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+            if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+        });
+        requestAnimationFrame(animate);
+    }
+    animate();
+
+</script>
+</body>
+</html>
