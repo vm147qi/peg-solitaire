@@ -36,6 +36,8 @@ public class PegSolitaireController {
 
         model.addAttribute("game", game);
         model.addAttribute("boardHtml", getHtmlField());
+        model.addAttribute("score", game.calculateScore());
+        model.addAttribute("gameState", game.getState());
 
         return "pegsolitaire";
     }
@@ -87,29 +89,53 @@ public class PegSolitaireController {
         game = new GameBoard(BoardShape.CLASSIC);
         return "redirect:/pegsolitaire";
     }
+    @RequestMapping("/pegsolitaire/undo")
+    public String undoMove() {
+        game.undoMove();
+        return "redirect:/pegsolitaire";
+    }
     public String getHtmlField() {
         StringBuilder sb = new StringBuilder("<table class='board'>");
+
+        List<Move> validMoves = game.getValidMoves();
 
         for (int row = 0; row < game.getHeight(); row++) {
             sb.append("<tr>");
             for (int col = 0; col < game.getWidth(); col++) {
                 Tile tile = game.getTile(row, col);
-                String styleClass = tile == null ? "nonplayable" : tile.getState().name().toLowerCase();
+                if (tile == null || tile.getState() == TileState.NON_PLAYABLE) {
+                    sb.append("<td class='nonplayable'></td>");
+                    continue;
+                }
+
+                String styleClass = tile.getState().name().toLowerCase();
 
                 sb.append(String.format("<td class='%s'>", styleClass));
 
                 if (tile != null && tile.getState() != TileState.NON_PLAYABLE) {
-                    sb.append(String.format(
-                            "<a href='/pegsolitaire?fromRow=%d&fromCol=%d&toRow=%d&toCol=%d'>%s</a>",
-                            row, col, row, col, tile.getState() == TileState.PEG ? "●" : "○"
-                    ));
+                    boolean isClickable = false;
+
+                    for (Move move : validMoves) {
+                        if (move.getFromRow() == row && move.getFromCol() == col) {
+                            isClickable = true;
+                            // Показати всі можливі напрямки руху
+                            sb.append(String.format(
+                                    "<a href='/pegsolitaire?fromRow=%d&fromCol=%d&toRow=%d&toCol=%d'>%s</a><br>",
+                                    move.getFromRow(), move.getFromCol(), move.getToRow(), move.getToCol(),
+                                    tile.getState() == TileState.PEG ? "●" : "○"
+                            ));
+                        }
+                    }
+
+                    if (!isClickable) {
+                        sb.append(tile.getState() == TileState.PEG ? "●" : "○");
+                    }
                 }
 
                 sb.append("</td>");
             }
             sb.append("</tr>");
         }
-
         sb.append("</table>");
         return sb.toString();
     }

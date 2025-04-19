@@ -3,15 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <title>Peg Solitaire</title>
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <style>
+        body {
+            background-image: url('/images/backround.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            text-shadow: 2px 2px 4px black;
+            overflow: hidden;
+        }
+
+        .top-border, .bottom-border {
+            position: absolute;
+            width: 100%;
+            height: 45px;
+            background-color: #4e6e69;
+            z-index: 10;
+        }
+
+        .top-border { top: 0; }
+        .bottom-border { bottom: 0; }
+
+        .footer-text {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+            font-size: 16px;
+            color: white;
+            z-index: 12;
+        }
+
+        .game-wrapper {
+            padding: 40px;
+            background-color: rgb(236, 234, 219);
+            border-radius: 30px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 90vw;
+            max-width: 700px;
+            margin: 55px 0;
+        }
+
+        .board-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        table.board {
+            border-collapse: separate;
+            border-spacing: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+        }
+
+        table.board td {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            vertical-align: middle;
+            padding: 0;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease, background-color 0.3s ease;
+        }
+
+        td.peg {
+            background-color: rgb(78, 110, 105);
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+        }
+
+        td.peg:hover {
+            transform: scale(1.1);
+            background-color: rgb(78, 110, 105);
+            box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+        }
+
+        td.empty {
+            background-color: #c0c0c0;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        td.empty:hover {
+            transform: scale(1.05);
+            background-color: #d6d6d6;
+        }
+
+        td.nonplayable {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            width: 50px;
+            height: 50px;
+            pointer-events: none;
+        }
+
+        a.button {
+            margin: -30px;
+            margin-left: -1000px;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #ffffffcc;
+            color: black;
+            border: none;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        a.button:hover {
+            background-color: #eeeeee;
+            transform: scale(1.05);
+        }
+    </style>
 </head>
 <body>
-<h1>Peg Solitaire</h1>
+<div class="top-border"></div>
+<div class="bottom-border"></div>
+<div class="footer-text">© 2025 Mukosii. Peg Solitaire.</div>
 
-<div th:utext="${boardHtml}"></div>
-
-<br/>
-<a href="/pegsolitaire/new">New game</a>
+<div class="game-wrapper">
+    <div class="board-container" th:utext="${boardHtml}"></div>
+    <p>Очки: <span th:text="${score}"></span></p>
+    <a href="/pegsolitaire/new" class="button">Нова гра</a>
+    <p th:if="${gameState == 'WON'}">🎉 Ви виграли!</p>
+    <p th:if="${gameState == 'NO_MOVES'}">😢 Хід неможливий. Гру завершено.</p>
+</div>
 
 </body>
 </html>

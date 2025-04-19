@@ -217,4 +217,5 @@ public class GameBoard {
     public String toString() {
         return String.format("GameBoard [%s] (%dx%d) - State: %s", shape, width, height, state);
     }
+
 }

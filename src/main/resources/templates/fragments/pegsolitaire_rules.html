@@ -39,12 +39,28 @@
         }
 
         .rules-container {
-            background: #a9ccc8;
+            position: relative;
             padding: 30px;
             border-radius: 20px;
             max-width: 800px;
             margin: auto;
+            z-index: 1;
+            color: white;
         }
+
+        .rules-container::before {
+            content: "";
+            position: absolute;
+            top: -75px;
+            left: -150px;
+            width: 160%;
+            height: 130%;
+            background: url('/images/leaderBoard11.png') no-repeat center center;
+            background-size: 100% 100%;
+            border-radius: 20px;
+            z-index: -1;
+        }
+
         h1 {
             text-align: center;
             font-size: 2em;
@@ -87,7 +103,7 @@
         <li>If only <strong>one peg</strong> remains on the board — you win!</li>
         <li>The fewer pegs left, the <strong>better your result</strong>.</li>
     </ul>
-    <a href="/pegsolitaire/menu" style="color: honeydew;">← Exit</a>
+    <a href="/pegsolitaire/menu" style="color: honeydew; font-size: 1.5em;">← Exit</a>
 </div>
 
 </body>
