@@ -33,21 +33,25 @@ public class PegSolitaireController {
                                Model model) {
 
         if (fromRow != null && fromCol != null && toRow == null && toCol == null) {
-            // Перевірка на вибір пегу для руху
             boolean hasValidMove = game.getValidMoves().stream()
                     .anyMatch(move -> move.getFromRow() == fromRow && move.getFromCol() == fromCol);
 
             if (hasValidMove) {
-                selectedRow = fromRow;
-                selectedCol = fromCol;
+                if (selectedRow != null && selectedCol != null &&
+                        selectedRow.equals(fromRow) && selectedCol.equals(fromCol)) {
+                    selectedRow = null;
+                    selectedCol = null;
+                } else {
+                    selectedRow = fromRow;
+                    selectedCol = fromCol;
+                }
             } else {
                 selectedRow = null;
                 selectedCol = null;
             }
         } else if (fromRow != null && fromCol != null && toRow != null && toCol != null) {
-            // Виконання руху
             Move move = new Move(fromRow, fromCol, toRow, toCol);
-            if (move.isValid(game)) {  // Перевірка на валідність руху
+            if (move.isValid(game)) {
                 game.applyMove(move);
             }
             selectedRow = null;
@@ -134,7 +138,7 @@ public class PegSolitaireController {
                     continue;
                 }
 
-                String tileClass = tile.getState().name().toLowerCase(); // peg / empty
+                String tileClass = tile.getState().name().toLowerCase();
                 String extraClass = "";
                 String content = "";
 
@@ -160,7 +164,7 @@ public class PegSolitaireController {
                     }
                 }
 
-                if (selRow == null && tile.getState() == TileState.PEG) {
+                if (tile.getState() == TileState.PEG) {
                     content = String.format(
                             "<a href='/pegsolitaire?fromRow=%d&fromCol=%d'>&nbsp;</a>",
                             row, col
