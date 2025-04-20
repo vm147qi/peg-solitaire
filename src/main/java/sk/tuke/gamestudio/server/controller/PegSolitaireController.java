@@ -22,6 +22,9 @@ public class PegSolitaireController {
 
     private GameBoard game = new GameBoard(BoardShape.CLASSIC);
 
+    private Integer selectedRow = null;
+    private Integer selectedCol = null;
+
     @RequestMapping("/pegsolitaire")
     public String pegsolitaire(@RequestParam(value = "fromRow", required = false) Integer fromRow,
                                @RequestParam(value = "fromCol", required = false) Integer fromCol,
@@ -29,18 +32,34 @@ public class PegSolitaireController {
                                @RequestParam(value = "toCol", required = false) Integer toCol,
                                Model model) {
 
-        if (fromRow != null && fromCol != null && toRow != null && toCol != null) {
+        if (fromRow != null && fromCol != null && toRow == null && toCol == null) {
+
+            boolean hasValidMove = game.getValidMoves().stream()
+                    .anyMatch(move -> move.getFromRow() == fromRow && move.getFromCol() == fromCol);
+
+            if (hasValidMove) {
+                selectedRow = fromRow;
+                selectedCol = fromCol;
+            } else {
+
+                selectedRow = null;
+                selectedCol = null;
+            }
+        } else if (fromRow != null && fromCol != null && toRow != null && toCol != null) {
+
             Move move = new Move(fromRow, fromCol, toRow, toCol);
             game.applyMove(move);
+            selectedRow = null;
+            selectedCol = null;
         }
 
         model.addAttribute("game", game);
         model.addAttribute("boardHtml", getHtmlField());
         model.addAttribute("score", game.calculateScore());
         model.addAttribute("gameState", game.getState());
-
         return "pegsolitaire";
     }
+
 
     //
     @RequestMapping("/pegsolitaire/start")
@@ -94,10 +113,14 @@ public class PegSolitaireController {
         game.undoMove();
         return "redirect:/pegsolitaire";
     }
+
     public String getHtmlField() {
         StringBuilder sb = new StringBuilder("<table class='board'>");
-
         List<Move> validMoves = game.getValidMoves();
+
+
+        final Integer selRow = selectedRow;
+        final Integer selCol = selectedCol;
 
         for (int row = 0; row < game.getHeight(); row++) {
             sb.append("<tr>");
@@ -108,35 +131,47 @@ public class PegSolitaireController {
                     continue;
                 }
 
-                String styleClass = tile.getState().name().toLowerCase();
+                String tileClass = tile.getState().name().toLowerCase(); // peg / empty
+                String extraClass = "";
+                String content = "";
 
-                sb.append(String.format("<td class='%s'>", styleClass));
+                final int currentRow = row;
+                final int currentCol = col;
 
-                if (tile != null && tile.getState() != TileState.NON_PLAYABLE) {
-                    boolean isClickable = false;
 
-                    for (Move move : validMoves) {
-                        if (move.getFromRow() == row && move.getFromCol() == col) {
-                            isClickable = true;
-                            // Показати всі можливі напрямки руху
-                            sb.append(String.format(
-                                    "<a href='/pegsolitaire?fromRow=%d&fromCol=%d&toRow=%d&toCol=%d'>%s</a><br>",
-                                    move.getFromRow(), move.getFromCol(), move.getToRow(), move.getToCol(),
-                                    tile.getState() == TileState.PEG ? "●" : "○"
-                            ));
-                        }
+                if (selRow != null && selCol != null) {
+                    if (row == selRow && col == selCol) {
+                        extraClass = " selected";
                     }
 
-                    if (!isClickable) {
-                        sb.append(tile.getState() == TileState.PEG ? "●" : "○");
+                    boolean isMoveTarget = validMoves.stream().anyMatch(move ->
+                            move.getFromRow() == selRow && move.getFromCol() == selCol &&
+                                    move.getToRow() == currentRow && move.getToCol() == currentCol);
+
+                    if (isMoveTarget) {
+                        extraClass = " movable";
+                        content = String.format(
+                                "<a href='/pegsolitaire?fromRow=%d&fromCol=%d&toRow=%d&toCol=%d'>&nbsp;</a>",
+                                selRow, selCol, row, col
+                        );
                     }
                 }
 
-                sb.append("</td>");
+                if (selRow == null && tile.getState() == TileState.PEG) {
+                    content = String.format(
+                            "<a href='/pegsolitaire?fromRow=%d&fromCol=%d'>&nbsp;</a>",
+                            row, col
+                    );
+                }
+
+                sb.append(String.format("<td class='%s%s'>%s</td>", tileClass, extraClass, content));
             }
             sb.append("</tr>");
         }
+
         sb.append("</table>");
         return sb.toString();
     }
+
+
 }
