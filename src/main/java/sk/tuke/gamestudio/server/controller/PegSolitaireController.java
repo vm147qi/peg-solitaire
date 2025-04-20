@@ -33,7 +33,7 @@ public class PegSolitaireController {
                                Model model) {
 
         if (fromRow != null && fromCol != null && toRow == null && toCol == null) {
-
+            // Перевірка на вибір пегу для руху
             boolean hasValidMove = game.getValidMoves().stream()
                     .anyMatch(move -> move.getFromRow() == fromRow && move.getFromCol() == fromCol);
 
@@ -41,14 +41,15 @@ public class PegSolitaireController {
                 selectedRow = fromRow;
                 selectedCol = fromCol;
             } else {
-
                 selectedRow = null;
                 selectedCol = null;
             }
         } else if (fromRow != null && fromCol != null && toRow != null && toCol != null) {
-
+            // Виконання руху
             Move move = new Move(fromRow, fromCol, toRow, toCol);
-            game.applyMove(move);
+            if (move.isValid(game)) {  // Перевірка на валідність руху
+                game.applyMove(move);
+            }
             selectedRow = null;
             selectedCol = null;
         }
@@ -59,6 +60,8 @@ public class PegSolitaireController {
         model.addAttribute("gameState", game.getState());
         return "pegsolitaire";
     }
+
+
 
 
     //

@@ -103,19 +103,20 @@ public class GameBoard {
     ///
 
     public List<Move> getValidMoves() {
-        //vráti zoznam všetkých možných ťahov.
         List<Move> moves = new ArrayList<>();
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
                 if (!isPlayableCell(row, col)) continue;
+
                 addValidMove(moves, row, col, row + 2, col);
                 addValidMove(moves, row, col, row - 2, col);
                 addValidMove(moves, row, col, row, col + 2);
                 addValidMove(moves, row, col, row, col - 2);
-                if (shape == BoardShape.TRIANGULAR) {
-                    addValidMove(moves, row, col, row + 2, col + 2);
-                    addValidMove(moves, row, col, row - 2, col - 2);
-                }
+
+                addValidMove(moves, row, col, row + 2, col + 2);
+                addValidMove(moves, row, col, row + 2, col - 2);
+                addValidMove(moves, row, col, row - 2, col + 2);
+                addValidMove(moves, row, col, row - 2, col - 2);
             }
         }
         return moves;
