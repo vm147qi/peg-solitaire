@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Peg Solitaire levels</title>
+    <style>
+        body {
+            background-image: url('/images/backround.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            text-shadow: 2px 2px 4px black;
+            overflow: hidden;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 13;
+        }
+
+        .top-border, .bottom-border {
+            position: absolute;
+            width: 100%;
+            height: 45px;
+            background-color: #4e6e69;
+            z-index: 10;
+        }
+
+        .top-border { top: 0; }
+        .bottom-border { bottom: 0; }
+
+        .footer-text {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+            font-size: 16px;
+            color: white;
+            z-index: 12;
+        }
+
+        .card {
+            width: 650px;
+            height: 370px;
+            background: rgb(255, 255, 255);
+            border-radius: 0.4em;
+            box-shadow: 0.3em 0.3em 0.7em #00000015;
+            transition: border 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: rgb(250, 250, 250) 0.2em solid;
+            z-index: 14;
+        }
+
+        .card:hover {
+            border: #4e6e69 0.2em solid;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="overlay"></div>
+
+<div class="top-border"></div>
+<div class="bottom-border"></div>
+<div class="footer-text">© 2025 Mukosii. Peg Solitaire.</div>
+
+<div class="card"></div>
+
+</body>
+</html>

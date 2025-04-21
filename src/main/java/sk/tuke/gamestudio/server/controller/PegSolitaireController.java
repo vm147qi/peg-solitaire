@@ -65,62 +65,6 @@ public class PegSolitaireController {
         return "pegsolitaire";
     }
 
-
-
-
-    //
-    @RequestMapping("/pegsolitaire/start")
-    public String startScreen() {
-        return "fragments/pegsolitaire_start";
-    }
-    //
-    @RequestMapping("/pegsolitaire/menu")
-    public String menuScreen() {
-        return "fragments/pegsolitaire_menu";
-    }
-    //
-    @RequestMapping("/pegsolitaire/rules")
-    public String rulesScreen() {
-        return "fragments/pegsolitaire_rules";
-    }
-    //
-    @RequestMapping("/pegsolitaire/comics")
-    public String comicsScreen() {
-        return "fragments/pegsolitaire_comics";
-    }
-
-    //
-    @RequestMapping("/pegsolitaire/leaderboard")
-    public String leaderScreen(Model model) {
-        List<Score> topScores = scoreService.getTopScores("PegSolitaire");
-        model.addAttribute("scores", topScores);
-        return "fragments/pegsolitaire_leaderboard";
-    }
-
-    //
-    @RequestMapping("/pegsolitaire/reviews")
-    public String reviewsScreen() {
-        return "fragments/pegsolitaire_reviews";
-    }
-    //
-    @RequestMapping("/pegsolitaire/exit")
-    public String exitScreen() {
-        return "fragments/pegsolitaire_start";
-    }
-
-
-
-    @RequestMapping("/pegsolitaire/new")
-    public String newGame() {
-        game = new GameBoard(BoardShape.CLASSIC);
-        return "redirect:/pegsolitaire";
-    }
-    @RequestMapping("/pegsolitaire/undo")
-    public String undoMove() {
-        game.undoMove();
-        return "redirect:/pegsolitaire";
-    }
-
     public String getHtmlField() {
         StringBuilder sb = new StringBuilder("<table class='board'>");
         List<Move> validMoves = game.getValidMoves();
@@ -178,6 +122,67 @@ public class PegSolitaireController {
 
         sb.append("</table>");
         return sb.toString();
+    }
+
+
+
+
+    //
+    @RequestMapping("/pegsolitaire/start")
+    public String startScreen() {
+        return "fragments/pegsolitaire_start";
+    }
+    //
+    @RequestMapping("/pegsolitaire/menu")
+    public String menuScreen() {
+        return "fragments/pegsolitaire_menu";
+    }
+    //
+    @RequestMapping("/pegsolitaire/rules")
+    public String rulesScreen() {
+        return "fragments/pegsolitaire_rules";
+    }
+    //
+    @RequestMapping("/pegsolitaire/comics")
+    public String comicsScreen() {
+        return "fragments/pegsolitaire_comics";
+    }
+    //
+    @RequestMapping("/pegsolitaire/reviews")
+    public String reviewsScreen() {
+        return "fragments/pegsolitaire_reviews";
+    }
+    //
+    @RequestMapping("/pegsolitaire/leaderboard")
+    public String leaderScreen(Model model) {
+        List<Score> topScores = scoreService.getTopScores("PegSolitaire");
+        model.addAttribute("scores", topScores);
+        return "fragments/pegsolitaire_leaderboard";
+    }
+    //
+    @RequestMapping("/pegsolitaire/levels")
+    public String levelSelectScreen() {
+        return "fragments/pegsolitaire_levels";
+    }
+    //
+    @RequestMapping("/pegsolitaire/new")
+    public String newGame() {
+        game = new GameBoard(BoardShape.CLASSIC);
+        return "redirect:/pegsolitaire";
+    }
+
+
+
+    //
+    @RequestMapping("/pegsolitaire/exit")
+    public String exitScreen() {
+        return "fragments/pegsolitaire_start";
+    }
+    //
+    @RequestMapping("/pegsolitaire/undo")
+    public String undoMove() {
+        game.undoMove();
+        return "redirect:/pegsolitaire";
     }
 
 
