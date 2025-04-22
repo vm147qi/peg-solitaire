@@ -24,8 +24,8 @@ public class GameBoard {
                 height = 7;
                 break;
             case EUROPEAN:
-                width = 9;
-                height = 9;
+                width = 8;
+                height = 8;
                 break;
         }
         this.moveHistory = new Stack<>();
@@ -171,22 +171,23 @@ public class GameBoard {
         tiles[3][3] = new Empty();//centrum
     }
 
+    // Asymmetric
     private void initializeEuropeanBoard() {
-        int center = 4;
-        int radius = 4;
-
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
-                int distSquared = (row - center) * (row - center) + (col - center) * (col - center);
-                if (distSquared <= radius * radius) {
-                    tiles[row][col] = new Peg();
-                } else {
+                boolean inCorner =
+                        (row < 2 || row > 4) && (col < 2 || col > 4);
+
+                if (inCorner) {
                     tiles[row][col] = new NonPlayable();
+                } else {
+                    tiles[row][col] = new Peg();
                 }
             }
         }
-        tiles[center][center] = new Empty();
+        tiles[3][3] = new Empty();
     }
+
 
     private void initializeTriangularBoard() {
         for (int row = 0; row < height; row++) {

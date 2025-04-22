@@ -20,7 +20,7 @@ public class PegSolitaireController {
     @Autowired
     private ScoreService scoreService;
 
-    private GameBoard game = new GameBoard(BoardShape.CLASSIC);
+    private GameBoard game = new GameBoard(BoardShape.TRIANGULAR);
 
     private Integer selectedRow = null;
     private Integer selectedCol = null;
@@ -75,6 +75,7 @@ public class PegSolitaireController {
 
         for (int row = 0; row < game.getHeight(); row++) {
             sb.append("<tr>");
+
             for (int col = 0; col < game.getWidth(); col++) {
                 Tile tile = game.getTile(row, col);
                 if (tile == null || tile.getState() == TileState.NON_PLAYABLE) {
@@ -167,7 +168,7 @@ public class PegSolitaireController {
     //
     @RequestMapping("/pegsolitaire/new")
     public String newGame() {
-        game = new GameBoard(BoardShape.CLASSIC);
+        game = new GameBoard(BoardShape.TRIANGULAR);
         return "redirect:/pegsolitaire";
     }
 
@@ -184,6 +185,4 @@ public class PegSolitaireController {
         game.undoMove();
         return "redirect:/pegsolitaire";
     }
-
-
 }
