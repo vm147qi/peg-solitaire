@@ -20,7 +20,10 @@ public class PegSolitaireController {
     @Autowired
     private ScoreService scoreService;
 
-    private GameBoard game = new GameBoard(BoardShape.TRIANGULAR);
+    private int selectedLevelIndex = 0;
+    private final BoardShape[] levels = {BoardShape.TRIANGULAR, BoardShape.CLASSIC, BoardShape.EUROPEAN};
+
+    private GameBoard game = new GameBoard(BoardShape.CLASSIC);
 
     private Integer selectedRow = null;
     private Integer selectedCol = null;
@@ -65,10 +68,10 @@ public class PegSolitaireController {
         return "pegsolitaire";
     }
 
+
     public String getHtmlField() {
         StringBuilder sb = new StringBuilder("<table class='board'>");
         List<Move> validMoves = game.getValidMoves();
-
 
         final Integer selRow = selectedRow;
         final Integer selCol = selectedCol;
@@ -160,20 +163,48 @@ public class PegSolitaireController {
         model.addAttribute("scores", topScores);
         return "fragments/pegsolitaire_leaderboard";
     }
+
+
+
+
     //
     @RequestMapping("/pegsolitaire/levels")
-    public String levelSelectScreen() {
+    public String levelSelectScreen(Model model) {
+        model.addAttribute("currentLevel", levels[selectedLevelIndex]);
+        model.addAttribute("imagePath", "/images/" + levels[selectedLevelIndex].name().toLowerCase() + ".png");
         return "fragments/pegsolitaire_levels";
     }
-    //
-    @RequestMapping("/pegsolitaire/new")
-    public String newGame() {
-        game = new GameBoard(BoardShape.TRIANGULAR);
+    @RequestMapping("/pegsolitaire/levels/prev")
+    public String previousLevel() {
+        selectedLevelIndex = (selectedLevelIndex - 1 + levels.length) % levels.length;
+        return "redirect:/pegsolitaire/levels";
+    }
+    @RequestMapping("/pegsolitaire/levels/next")
+    public String nextLevel() {
+        selectedLevelIndex = (selectedLevelIndex + 1) % levels.length;
+        return "redirect:/pegsolitaire/levels";
+    }
+    @RequestMapping("/pegsolitaire/startSelected")
+    public String startSelectedLevel() {
+        game = new GameBoard(levels[selectedLevelIndex]);
+        return "redirect:/pegsolitaire";
+    }
+    @RequestMapping("/pegsolitaire/selectLevel")
+    public String selectLevel(@RequestParam("level") String levelName) {
+        BoardShape selected = BoardShape.valueOf(levelName);
+        game = new GameBoard(selected);
         return "redirect:/pegsolitaire";
     }
 
 
 
+
+    //
+    @RequestMapping("/pegsolitaire/new")
+    public String newGame() {
+        game = new GameBoard(BoardShape.CLASSIC);
+        return "redirect:/pegsolitaire";
+    }
     //
     @RequestMapping("/pegsolitaire/exit")
     public String exitScreen() {
