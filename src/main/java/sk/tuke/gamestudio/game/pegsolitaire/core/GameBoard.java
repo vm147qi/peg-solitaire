@@ -91,7 +91,7 @@ public class GameBoard {
         return getRemainingPegs() == 1 || getValidMoves().isEmpty();
     }
 
-    private int getRemainingPegs() {
+    public int getRemainingPegs() {
         int countPeg = 0;
         for (Tile[] row : tiles) {
             for (Tile tile : row) {

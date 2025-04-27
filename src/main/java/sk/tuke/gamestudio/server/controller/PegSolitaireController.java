@@ -61,13 +61,16 @@ public class PegSolitaireController {
             selectedCol = null;
         }
 
+        int remainingPegs = game.getRemainingPegs();
+        model.addAttribute("remainingPegs", remainingPegs);
+
         model.addAttribute("game", game);
         model.addAttribute("boardHtml", getHtmlField());
         model.addAttribute("score", game.calculateScore());
         model.addAttribute("gameState", game.getState());
+        model.addAttribute("remainingPegs", game.getRemainingPegs());
         return "pegsolitaire";
     }
-
 
     public String getHtmlField() {
         StringBuilder sb = new StringBuilder("<table class='board'>");
@@ -128,8 +131,14 @@ public class PegSolitaireController {
         return sb.toString();
     }
 
-
-
+    //
+    @RequestMapping("/pegsolitaire/new")
+    public String newGame() {
+        game = new GameBoard(levels[selectedLevelIndex]);
+        selectedRow = null;
+        selectedCol = null;
+        return "redirect:/pegsolitaire";
+    }
 
     //
     @RequestMapping("/pegsolitaire/start")
@@ -165,8 +174,6 @@ public class PegSolitaireController {
     }
 
 
-
-
     //
     @RequestMapping("/pegsolitaire/levels")
     public String levelSelectScreen(Model model) {
@@ -197,14 +204,6 @@ public class PegSolitaireController {
     }
 
 
-
-
-    //
-    @RequestMapping("/pegsolitaire/new")
-    public String newGame() {
-        game = new GameBoard(BoardShape.CLASSIC);
-        return "redirect:/pegsolitaire";
-    }
     //
     @RequestMapping("/pegsolitaire/exit")
     public String exitScreen() {

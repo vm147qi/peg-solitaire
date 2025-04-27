@@ -6,7 +6,7 @@
     <title>Peg Solitaire levels</title>
     <style>
         body {
-            background-image: url('/images/backround.jpg');
+            background-image: url('/images/levels_round.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -54,18 +54,26 @@
         }
 
         .card {
+            position: relative;
             width: 750px;
             height: 420px;
-            background: rgb(195, 214, 208);
-            border-radius: 0.4em;
-            box-shadow: 0.3em 0.3em 0.7em #00000015;
-            transition: border 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: rgb(195, 214, 208) 0.2em solid;
+            background: linear-gradient(135deg, rgba(195, 214, 208, 0.8), rgba(78, 110, 105, 0.8));
+            border-radius: 0.6em;
+            box-shadow: 0.3em 0.3em 0.7em rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            border: none;
             z-index: 14;
         }
         .card:hover {
-            border: #4e6e69 0.2em solid;
+            background: linear-gradient(135deg, rgba(78, 110, 105, 0.9), rgba(195, 214, 208, 0.9));
+            box-shadow: 0.3em 0.3em 1em rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
         }
+        .card:active {
+            transform: scale(1);
+            box-shadow: 0.3em 0.3em 0.7em rgba(0, 0, 0, 0.4);
+        }
+
 
         .play-button {
             border: 1px solid white;
@@ -211,17 +219,58 @@
         .button-3d:active .button-base {
             border-radius: 10px 10px 8px 8px / 8px;
         }
+
+
+        /* Home button */
+        .home-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #4e6e69;
+            color: white;
+            border: none;
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 15;
+        }
+        .home-btn:hover {
+            background-color: #3a5550;
+            transform: scale(1.1);
+        }
+        .home-btn:active {
+            transform: scale(0.95);
+        }
+
+
+
+
     </style>
 </head>
 <body>
 
 <div class="overlay"></div>
 
-<div class="top-border"></div>
+    <div class="top-border"></div>
 <div class="bottom-border"></div>
 <div class="footer-text">© 2025 Mukosii. Peg Solitaire.</div>
 
 <div class="card">
+
+    <a href="/pegsolitaire/menu" class="home-btn" title="Menu">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke="currentColor" stroke-width="1.5" width="30" height="30">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+        </svg>
+    </a>
     <div class="level-selector" style="text-align:center; padding:42px;">
 
 
@@ -258,7 +307,7 @@
         <br>
         <button class="play-button" onclick="location.href='/pegsolitaire/startSelected'">PLAY</button>
     </div>
-</div>
 
+</div>
 </body>
 </html>
