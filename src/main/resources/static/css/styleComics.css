@@ -157,24 +157,6 @@ body {
     animation: fadeIn 2s ease-out forwards;
 }
 
-#skipButton {
-    position: absolute;
-    bottom: 60px;
-    right: 30px;
-    padding: 10px 20px;
-    font-size: 25px;
-    background-color: #ffffffcc;
-    color: black;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    z-index: 1000;
-}
-#skipButton:hover {
-    background-color: #dddddd;
-}
-
 #pressEnterText {
     position: absolute;
     bottom: 60px;
@@ -192,24 +174,6 @@ body {
     50% { opacity: 0.3; }
 }
 
-#exitButton {
-    position: absolute;
-    bottom: 60px;
-    left: 30px;
-    padding: 10px 20px;
-    font-size: 25px;
-    background-color: #ffffffcc;
-    color: black;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    z-index: 1000;
-}
-
-#exitButton:hover {
-    background-color: #dddddd;
-}
 
 .bush {
     position: absolute;

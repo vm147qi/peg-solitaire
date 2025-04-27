@@ -11,7 +11,10 @@ import sk.tuke.gamestudio.entity.Score;
 import sk.tuke.gamestudio.game.pegsolitaire.core.*;
 import sk.tuke.gamestudio.service.ScoreService;
 
+import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @Scope(WebApplicationContext.SCOPE_SESSION)
@@ -28,12 +31,14 @@ public class PegSolitaireController {
     private Integer selectedRow = null;
     private Integer selectedCol = null;
 
+    private String username = null;
+
     @RequestMapping("/pegsolitaire")
     public String pegsolitaire(@RequestParam(value = "fromRow", required = false) Integer fromRow,
                                @RequestParam(value = "fromCol", required = false) Integer fromCol,
                                @RequestParam(value = "toRow", required = false) Integer toRow,
                                @RequestParam(value = "toCol", required = false) Integer toCol,
-                               Model model) {
+                               Model model, HttpSession session) {
 
         if (fromRow != null && fromCol != null && toRow == null && toCol == null) {
             boolean hasValidMove = game.getValidMoves().stream()
@@ -63,6 +68,19 @@ public class PegSolitaireController {
 
         int remainingPegs = game.getRemainingPegs();
         model.addAttribute("remainingPegs", remainingPegs);
+
+        if (remainingPegs == 1 || remainingPegs == 0 || game.getValidMoves().isEmpty()) {
+            Score score = new Score();
+            score.setPlayer(username);
+            score.setPoints(game.calculateScore());
+            score.setGame("PegSolitaire");
+            score.setPlayedOn(new Date());
+            scoreService.addScore(score);
+        }
+
+        if (remainingPegs <= 0 || game.getValidMoves().isEmpty()) {
+            saveScore(session);
+        }
 
         model.addAttribute("game", game);
         model.addAttribute("boardHtml", getHtmlField());
@@ -157,7 +175,10 @@ public class PegSolitaireController {
     }
     //
     @RequestMapping("/pegsolitaire/comics")
-    public String comicsScreen() {
+    public String comicsScreen(Model model) {
+        if (username == null) {
+            return "redirect:/pegsolitaire/login";
+        }
         return "fragments/pegsolitaire_comics";
     }
     //
@@ -169,9 +190,35 @@ public class PegSolitaireController {
     @RequestMapping("/pegsolitaire/leaderboard")
     public String leaderScreen(Model model) {
         List<Score> topScores = scoreService.getTopScores("PegSolitaire");
-        model.addAttribute("scores", topScores);
+        List<Score> top8Scores = topScores.stream().limit(8).collect(Collectors.toList());
+        model.addAttribute("scores", top8Scores);
         return "fragments/pegsolitaire_leaderboard";
     }
+
+
+    @RequestMapping("/pegsolitaire/login")
+    public String loginScreen() {
+        return "fragments/pegsolitaire_login";
+    }
+    @RequestMapping("/pegsolitaire/loginSubmit")
+    public String loginSubmit(@RequestParam("username") String username) {
+        this.username = username;
+        return "redirect:/pegsolitaire/comics";
+    }
+    @RequestMapping("/pegsolitaire/saveScore")
+    public String saveScore(HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        if (username != null && game.getRemainingPegs() <= 0) {
+            Score score = new Score();
+            score.setPlayer(username);
+            score.setPoints(game.calculateScore());
+            score.setGame("PegSolitaire");
+            score.setPlayedOn(new Date());
+            scoreService.addScore(score);
+        }
+        return "redirect:/pegsolitaire/leaderboard";
+    }
+
 
 
     //

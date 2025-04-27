@@ -607,7 +607,6 @@
     }
 
 
-
     function startHintAnimation() {
         const peg1 = document.getElementById("peg1");
         const peg2 = document.getElementById("peg2");
@@ -643,7 +642,6 @@
         }, 1500);
     }
 
-
     function showGameResultModal(resultMessage) {
         const overlay = document.getElementById('hintOverlay');
         overlay.style.display = 'block';
@@ -678,10 +676,8 @@
         modal.classList.add('show');
     }
 
-
     window.onload = function() {
-        //const gameState = '[[${gameState}]]';
-     const gameState = 'NO_MOVES';
+        const gameState = '[[${gameState}]]';
         if (gameState === 'WON') {
             showGameResultModal('win');
         } else if (gameState === 'NO_MOVES') {

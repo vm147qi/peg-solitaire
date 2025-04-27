@@ -14,98 +14,225 @@
             height: 100vh;
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            color: white;
-            text-shadow: 2px 2px 4px black;
+            color: #fff;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
             overflow: hidden;
         }
 
         .top-border, .bottom-border {
             position: absolute;
             width: 100%;
-            height: 45px;
+            height: 50px;
             background-color: #4e6e69;
             z-index: 10;
         }
         .top-border {
             top: 0;
         }
-
         .bottom-border {
             bottom: 0;
         }
-
         .footer-text {
             position: absolute;
             bottom: 10px;
             width: 100%;
             text-align: center;
-            font-size: 16px;
-            color: white;
+            font-size: 14px;
+            color: #ddd;
             z-index: 11;
         }
 
-        .leaderboard-frame {
-            background-image: url('/images/leaderBoard11.png');
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            width: 800px;
-            height: 700px;
-            display: flex;
-            left: 5%;
-            flex-direction: column;
-            padding-top: 110px;
-            position: relative;
-            z-index: 1;
+        .leaderboard-title {
+            font-size: 60px;
+            font-weight: 800;
+            margin-bottom: -5px;
+            text-align: center;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: linear-gradient(45deg, gold, #f2edcc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.6);
+            animation: fadeIn 1s ease-out;
         }
 
-        .leaderboard-title {
-            font-size: 36px;
-            font-weight: bold;
-            margin-bottom: 30px;
-            margin-left: 190px;
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .leaderboard-table {
+            background: rgba(78, 110, 105, 0.8);
+            border-radius: 20px;
+            padding: 30px 40px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
             display: flex;
             flex-direction: column;
             gap: 15px;
+            min-width: 400px;
+            max-height: 70vh;
+            overflow-y: auto;
         }
 
         .leaderboard-row {
             display: flex;
             justify-content: space-between;
-            width: 350px;
-            font-size: 24px;
-            margin-left: 150px;
+            font-size: 22px;
+            padding: 10px 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            transition: background 0.3s, transform 0.3s;
+            position: relative;
+        }
+
+        .leaderboard-row:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+
+        .first-place {
+            background: linear-gradient(45deg, gold, #f2edcc);
+            color: #F2EDDC;
+            font-weight: bold;
+            font-size: 28px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.6);
+            border: 3px solid gold;
+            transform: scale(1.05);
+            animation: pulse 1.5s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1.1);
+            }
+        }
+
+        .second-place {
+            background: silver;
+            color: #F2EDDC;
+            font-weight: bold;
+        }
+
+        .third-place {
+            background: #cd7f32;
+            color: #F2EDDC;
+            font-weight: bold;
+        }
+
+        .player-name, .player-score {
+            width: 50%;
         }
 
         .player-name {
             text-align: left;
+            font-weight: 600;
         }
 
         .player-score {
             text-align: right;
+            font-weight: 500;
+        }
+
+        .star {
+            color: #D9923B;
+            font-size: 40px;
+            margin-left: 180px;
+            position: relative;
+            top: -5px;
+            animation: star-shine 1s infinite alternate;
+        }
+
+        @keyframes star-shine {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1.2);
+                opacity: 0.8;
+            }
+        }
+
+        .player-name .star {
+            position: absolute;
+            left: 0;
+            top: -4px;
+        }
+
+
+        /* Menu */
+        .home-btn {
+            position:  fixed;
+            top: 565px;
+            left: 10px;
+            background-color: #4e6e69;
+            color: white;
+            border: none;
+            width: 70px;
+            height: 70px;
+            font-size: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 15;
+            text-decoration: none;
+        }
+        .home-btn:hover {
+            background-color: #3a5550;
+            transform: scale(1.1);
+        }
+        .home-btn:active {
+            transform: scale(0.95);
         }
     </style>
-
 </head>
 <body>
 <div class="top-border"></div>
 <div class="bottom-border"></div>
-
 <div class="footer-text">© 2025 Mukosii. Peg Solitaire.</div>
 
-<div class="leaderboard-frame">
-    <div class="leaderboard-title">LEADERBOARD</div>
-    <div class="leaderboard-table">
-        <div class="leaderboard-row" th:each="score : ${scores}">
-            <div class="player-name" th:text="${score.player}">Player</div>
+<a href="/pegsolitaire/menu" class="home-btn" title="Menu">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+         stroke="currentColor" stroke-width="1.5" width="30" height="30">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+    </svg>
+</a>
+
+<div class="leaderboard-title">LEADERBOARD</div>
+<div class="leaderboard-table">
+    <div th:each="score, iterStat : ${scores}">
+        <div th:if="${iterStat.index < 7}" class="leaderboard-row"
+             th:classappend="
+         ${iterStat.index == 0} ? 'first-place' :
+         (${iterStat.index == 1} ? 'second-place' :
+         (${iterStat.index == 2} ? 'third-place' : ''))">
+            <div class="player-name">
+                <span th:text="${score.player}">Player</span>
+                <span th:if="${iterStat.index == 0}" class="star">★</span>
+            </div>
             <div class="player-score" th:text="${score.points}">Points</div>
         </div>
     </div>
