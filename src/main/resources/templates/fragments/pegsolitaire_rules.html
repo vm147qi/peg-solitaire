@@ -2,25 +2,39 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>PegSolitaire Rules</title>
+    <title>PegSolitaire Cards</title>
     <link rel="stylesheet" type="text/css" href="/css/styleMenu.css">
     <style>
         body {
-            background-image: url('/images/rulesbackround.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            height: 100vh;
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
+            position: relative;
             color: white;
-            text-shadow: 2px 2px 4px black;
-            overflow: hidden;
+        }
+
+        .parallax {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -2;
+            background: url('/images/rulesbackround.png') no-repeat center center fixed;
+            background-size: cover;
+            animation: parallax 6s linear infinite;
+        }
+
+        @keyframes parallax {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(7%); }
+            100% { transform: translateY(0); }
         }
 
         .top-border, .bottom-border {
@@ -28,8 +42,9 @@
             width: 100%;
             height: 45px;
             background-color: #4e6e69;
-            z-index: 10;
+            z-index: 5;
         }
+
         .top-border {
             top: 0;
         }
@@ -38,73 +53,164 @@
             bottom: 0;
         }
 
-        .rules-container {
-            position: relative;
-            padding: 30px;
-            border-radius: 20px;
-            max-width: 800px;
-            margin: auto;
-            z-index: 1;
-            color: white;
-        }
-
-        .rules-container::before {
-            content: "";
-            position: absolute;
-            top: -75px;
-            left: -150px;
-            width: 160%;
-            height: 130%;
-            background: url('/images/leaderBoard11.png') no-repeat center center;
-            background-size: 100% 100%;
-            border-radius: 20px;
-            z-index: -1;
-        }
-
-        h1 {
+        .page-title {
+            margin-top: 60px;
+            font-size: 3em;
+            font-weight: bold;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+            z-index: 2;
             text-align: center;
-            font-size: 2em;
-        }
-        ul, p {
-            font-size: 1em;
         }
 
-        a {
+        .cards {
+            display: flex;
+            flex-direction: row;
+            gap: 30px;
+            margin-top: 30px;
+            margin-bottom: 50px;
+            z-index: 1;
+            align-items: flex-start;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 1200px;
+        }
+
+        .cards .card {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+            height: 280px;
+            width: 320px;
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+            transition: 400ms;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .cards .red {
+            background-color: #6ba6a0;
+        }
+
+        .cards .blue {
+            background-color: #d6bfa7;
+        }
+
+        .cards .green {
+            background-color:#b4d2ce;
+        }
+
+        .cards .card p.tip {
+            font-size: 1.6em;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .cards .card p.second-text {
             font-size: 1em;
+            margin: 0;
+            padding: 0 10px;
+            line-height: 1.4em;
+        }
+
+        .cards .card:hover {
+            transform: scale(1.05);
+        }
+
+        .cards:hover > .card:not(:hover) {
+            filter: blur(8px);
+            transform: scale(0.95);
+        }
+
+        .footer-text {
+            position: absolute;
+            bottom: 10px;
+            font-size: 0.9em;
+            color: #ccc;
+            z-index: 6;
+            text-align: center;
+            width: 100%;
+        }
+
+        /* Menu */
+        .home-btn {
+            position:  fixed;
+            top: 565px;
+            left: 10px;
+            background-color: #4e6e69;
+            color: white;
+            border: none;
+            width: 70px;
+            height: 70px;
+            font-size: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 15;
             text-decoration: none;
         }
-
+        .home-btn:hover {
+            background-color: #3a5550;
+            transform: scale(1.1);
+        }
+        .home-btn:active {
+            transform: scale(0.95);
+        }
     </style>
 </head>
 <body>
+
+
+<div class="parallax"></div>
+<div class="top-border"></div>
+
+
+<div class="page-title">Peg Solitaire Rules</div>
+
+
+<div class="cards">
+    <div class="card red">
+        <p class="tip">🎯 The Goal</p>
+        <p class="second-text">
+            Your goal is to leave only one peg on the board, preferably in the center position.
+        </p>
+    </div>
+    <div class="card blue">
+        <p class="tip">🎮 How to Play</p>
+        <p class="second-text">
+            The game starts with pegs on the board, with one empty hole in the center. <br><br>
+            A peg can jump over an adjacent peg (horizontally, vertically or diagonally) to the empty space behind it.<br><br>
+            The jumped peg is removed from the board.
+        </p>
+    </div>
+    <div class="card green">
+        <p class="tip">❌ End of the Game</p>
+        <p class="second-text">
+            The game ends when you can't make any more moves, you lose. <br><br>
+            If there is only one peg left, you win! <br><br>
+            The fewer pegs left, the better your score.
+        </p>
+    </div>
+</div>
+
+<div class="bottom-border"></div>
 <div class="footer-text">© 2025 Mukosii. Peg Solitaire.</div>
 
-<div class="top-border"></div>
-<div class="bottom-border"></div>
-
-<div class="rules-container">
-    <h1>📜 Peg Solitaire Rules 📜</h1>
-
-    <h2>🎯 Objective</h2>
-    <p>Your goal is to leave only <strong>one peg</strong> on the board, preferably in the <strong>center position</strong>.</p>
-
-    <h2>🎮 How to Play</h2>
-    <ul>
-        <li>The game starts with pegs on the board, with one empty hole in the center.</li>
-        <li>A peg may <strong>jump</strong> over an adjacent peg (horizontally, vertically, obliquely) into an <strong>empty space</strong> directly beyond it.</li>
-        <li>The peg that was jumped over is <strong>removed from the board</strong>.</li>
-        <li>Jumps can be made only in <strong>four directions</strong>: up, down, left, or right.</li>
-        <li><em>Diagonal jumps are not allowed.</em></li>
-    </ul>
-
-    <h2>❌ Game Over</h2>
-    <ul>
-        <li>The game ends when <strong>no more valid moves</strong> are possible.</li>
-        <li>If only <strong>one peg</strong> remains on the board — you win!</li>
-        <li>The fewer pegs left, the <strong>better your result</strong>.</li>
-    </ul>
-    <a href="/pegsolitaire/menu" style="color: honeydew; font-size: 1.5em;">← Exit</a>
-</div>
+<a href="/pegsolitaire/menu" class="home-btn" title="Menu">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+         stroke="currentColor" stroke-width="1.5" width="30" height="30">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+    </svg>
+</a>
 
 </body>
 </html>
