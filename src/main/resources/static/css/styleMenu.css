@@ -15,6 +15,33 @@ body {
     overflow: hidden;
 }
 
+@font-face {
+    font-family: '9thyssei';
+    src: url('static/fonts/9thyssei.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: '9thyssen';
+    src: url('static/fonts/9thyssen.ttf') format('truetype');
+}
+
+.top-border,
+.bottom-border {
+    position: absolute;
+    width: 100%;
+    height: 45px;
+    background-color: #4e6e69;
+    z-index: 10;
+}
+
+.top-border {
+    top: 0;
+}
+
+.bottom-border {
+    bottom: 0;
+}
+
 .side-peg {
     position: absolute;
     bottom: -10vh;
@@ -29,31 +56,6 @@ body {
     opacity: 0.95;
 }
 
-@font-face {
-    font-family: '9thyssei';
-    src: url('static/fonts/9thyssei.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: '9thyssen';
-    src: url('static/fonts/9thyssen.ttf') format('truetype');
-}
-
-.top-border, .bottom-border {
-    position: absolute;
-    width: 100%;
-    height: 45px;
-    background-color: #4e6e69;
-    z-index: 10;
-}
-.top-border {
-    top: 0;
-}
-
-.bottom-border {
-    bottom: 0;
-}
-
 .side-peg.right {
     right: -36vw;
 }
@@ -61,7 +63,6 @@ body {
 .side-peg.right:hover {
     transform: rotateX(30deg) translateY(-40px) translateZ(-50px);
 }
-
 
 .title {
     font-family: '9thyssei', monospace;
@@ -76,41 +77,6 @@ body {
     margin: 0;
 }
 
-.menu-button {
-    position: absolute;
-    top: 22vh;
-    left: 20%;
-    transform: translateX(-50%);
-    width: 250px;
-    z-index: 4;
-    cursor: pointer;
-    transition: transform 0.3s ease, filter 0.3s ease;
-}
-
-.menu-button img {
-    width: 100%;
-    height: auto;
-    opacity: 0.9;
-    display: block;
-}
-
-.menu-button:hover {
-    filter: drop-shadow(0 0 10px #4e6e69) brightness(1.2);
-    transform: translateX(-50%) scale(1.05);
-}
-
-.menu-button-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-family: '9thyssei', monospace;
-    font-size: 40px;
-    color: white;
-    text-shadow: 2px 2px 4px black;
-    pointer-events: none;
-}
-
 .footer-text {
     position: absolute;
     bottom: 10px;
@@ -121,3 +87,43 @@ body {
     color: white;
     z-index: 11;
 }
+
+.shadow__btn {
+    padding: 10px 20px;
+    border: none;
+    font-size: 22px;
+    color: white;
+    border-radius: 10px;
+    letter-spacing: 2px;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: 0.5s;
+    transition-property: box-shadow, transform;
+    background: #6a938c;
+    box-shadow: 0 0 15px #4e6e69;
+    cursor: pointer;
+    width: 250px;
+    height: 70px;
+    font-family: '9thyssei', monospace;
+}
+
+.shadow__btn:hover {
+    box-shadow: 0 0 5px #4e6e69,
+    0 0 25px #4e6e69,
+    0 0 50px #4e6e69,
+    0 0 100px #4e6e69;
+    transform: scale(1.05);
+}
+
+.menu-button-container {
+    position: absolute;
+    left: 20%;
+    transform: translateX(-50%);
+    z-index: 4;
+}
+
+#btn1 { top: 22vh; }
+#btn2 { top: 35vh; }
+#btn3 { top: 48vh; }
+#btn4 { top: 61vh; }
+#btn5 { top: 74vh; }

@@ -14,6 +14,18 @@ body {
     color: white;
     text-shadow: 2px 2px 4px black;
     overflow: hidden;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1;
 }
 
 @keyframes fadeIn {
@@ -51,6 +63,7 @@ body {
     background-repeat: no-repeat;
     background-position: center;
     animation: fadeIn 2s ease-out forwards;
+    z-index: 2;  /* Забезпечує, що комікс буде зверху */
 }
 
 .comic-frame-container {
@@ -79,7 +92,7 @@ body {
 .panel-2 img,
 .panel-3 img,
 .panel-4 img,
-.panel-5 img{
+.panel-5 img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -174,77 +187,6 @@ body {
     50% { opacity: 0.3; }
 }
 
-
-.bush {
-    position: absolute;
-    width: 300px;
-    z-index: 10;
-}
-
-.bush-1 {
-    left: 120px;
-    bottom: 0;
-}
-
-.bush-2 {
-    right: 120px;
-    bottom: 20px;
-}
-
-.bee {
-    position: absolute;
-    top: 450px;
-    width: 70px;
-    z-index: 10;
-    animation: float 3s ease-in-out infinite;
-}
-
-.bee-1 {
-    left: 100px;
-    animation: float-left 3s ease-in-out infinite;
-}
-
-.bee-2 {
-    right: 100px;
-    animation: float-right 3s ease-in-out infinite;
-}
-
-@keyframes float-left {
-    0%, 100% { transform: translateY(0) rotate(20deg) scaleX(-1);; }
-    50% { transform: translateY(-10px) rotate(20deg) scaleX(-1);; }
-}
-
-@keyframes float-right {
-    0%, 100% { transform: translateY(0) rotate(-20deg); }
-    50% { transform: translateY(-10px) rotate(-20deg); }
-}
-
-.flower {
-    position: absolute;
-    width: 50px;
-    z-index: 15;
-}
-
-.flower-1a {
-    left: 300px;
-    bottom: 140px;
-}
-
-.flower-1b {
-    left: 170px;
-    bottom: 90px;
-}
-
-.flower-2a {
-    right: 200px;
-    bottom: 140px;
-}
-
-.flower-2b {
-    right: 300px;
-    bottom: 90px;
-}
-
 .footer-text {
     position: absolute;
     bottom: 10px;
@@ -254,4 +196,64 @@ body {
     font-size: 16px;
     color: white;
     z-index: 11;
+}
+
+.home-btn {
+    position: fixed;
+    top: 565px;
+    left: 13px;
+    background-color: #4e6e69;
+    color: white;
+    border: none;
+    width: 70px;
+    height: 70px;
+    font-size: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 15;
+    text-decoration: none;
+}
+
+.home-btn:hover {
+    background-color: #3a5550;
+    transform: scale(1.1);
+}
+
+.home-btn:active {
+    transform: scale(0.95);
+}
+
+.skip-btn {
+    position: fixed;
+    top: 565px;
+    left: 1450px;
+    background-color: #4e6e69;
+    color: white;
+    border: none;
+    width: 70px;
+    height: 70px;
+    font-size: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 15;
+    text-decoration: none;
+}
+
+.skip-btn:hover {
+    background-color: #3a5550;
+    transform: scale(1.1);
+}
+
+.skip-btn:active {
+    transform: scale(0.95);
 }

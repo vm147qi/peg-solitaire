@@ -6,7 +6,7 @@
     <title>Peg Solitaire levels</title>
     <style>
         body {
-            background-image: url('/images/levels_round.png');
+            background-image: url('/images/backround.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -21,16 +21,6 @@
             color: white;
             text-shadow: 2px 2px 4px black;
             overflow: hidden;
-        }
-
-        .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.4);
-            z-index: 13;
         }
 
         .top-border, .bottom-border {
@@ -57,21 +47,25 @@
             position: relative;
             width: 750px;
             height: 420px;
-            background: linear-gradient(135deg, rgba(195, 214, 208, 0.8), rgb(240, 239, 225));
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border-radius: 0.6em;
             box-shadow: 0.3em 0.3em 0.7em rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
-            border: none;
+            border: 1px solid rgba(255, 255, 255, 0.18);
             z-index: 14;
         }
+
         .card:hover {
-            background: linear-gradient(135deg, rgb(240, 239, 225), rgba(195, 214, 208, 0.9));
+            background: rgba(255, 255, 255, 0.3);
             box-shadow: 0.3em 0.3em 1em rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 255, 255, 0.2);
             transform: scale(1.05);
         }
+
         .card:active {
             transform: scale(1);
-            box-shadow: 0.3em 0.3em 0.7em rgba(0, 0, 0, 0.4);
+            box-shadow: 0.3em 0.3em 0.5em rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 255, 255, 0.1);
         }
 
 
@@ -248,8 +242,6 @@
     </style>
 </head>
 <body>
-
-<div class="overlay"></div>
 
 <div class="top-border"></div>
 <div class="bottom-border"></div>
