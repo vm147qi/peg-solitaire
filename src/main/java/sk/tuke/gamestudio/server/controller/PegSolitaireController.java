@@ -7,8 +7,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.WebApplicationContext;
+import sk.tuke.gamestudio.entity.Comment;
+import sk.tuke.gamestudio.entity.Rating;
 import sk.tuke.gamestudio.entity.Score;
 import sk.tuke.gamestudio.game.pegsolitaire.core.*;
+import sk.tuke.gamestudio.service.CommentService;
+import sk.tuke.gamestudio.service.RatingException;
+import sk.tuke.gamestudio.service.RatingService;
 import sk.tuke.gamestudio.service.ScoreService;
 
 import javax.servlet.http.HttpSession;
@@ -23,15 +28,23 @@ public class PegSolitaireController {
     @Autowired
     private ScoreService scoreService;
 
+    @Autowired
+    private CommentService commentService;
+
+    @Autowired
+    private RatingService ratingService;
+
     private int selectedLevelIndex = 0;
     private final BoardShape[] levels = {BoardShape.TRIANGULAR, BoardShape.CLASSIC, BoardShape.EUROPEAN};
 
-    private GameBoard game = new GameBoard(BoardShape.CLASSIC);
+    private GameBoard game = new GameBoard(levels[selectedLevelIndex]);
 
     private Integer selectedRow = null;
     private Integer selectedCol = null;
 
     private String username = null;
+
+    private int unlockedLevelIndex = 0;
 
     @RequestMapping("/pegsolitaire")
     public String pegsolitaire(@RequestParam(value = "fromRow", required = false) Integer fromRow,
@@ -82,11 +95,19 @@ public class PegSolitaireController {
             saveScore(session);
         }
 
+        if (remainingPegs == 1
+                && selectedLevelIndex == unlockedLevelIndex
+                && unlockedLevelIndex < levels.length - 1) {
+            unlockedLevelIndex++;
+        }
+
         model.addAttribute("game", game);
         model.addAttribute("boardHtml", getHtmlField());
         model.addAttribute("score", game.calculateScore());
         model.addAttribute("gameState", game.getState());
         model.addAttribute("remainingPegs", game.getRemainingPegs());
+        model.addAttribute("unlockedLevelIndex", unlockedLevelIndex);
+
         return "pegsolitaire";
     }
 
@@ -182,10 +203,6 @@ public class PegSolitaireController {
         return "fragments/pegsolitaire_comics";
     }
     //
-    @RequestMapping("/pegsolitaire/reviews")
-    public String reviewsScreen() {
-        return "fragments/pegsolitaire_reviews";
-    }
     //
     @RequestMapping("/pegsolitaire/leaderboard")
     public String leaderScreen(Model model) {
@@ -226,8 +243,15 @@ public class PegSolitaireController {
     public String levelSelectScreen(Model model) {
         model.addAttribute("currentLevel", levels[selectedLevelIndex]);
         model.addAttribute("imagePath", "/images/" + levels[selectedLevelIndex].name().toLowerCase() + ".png");
+        model.addAttribute("levelLocked", selectedLevelIndex > unlockedLevelIndex);
+        model.addAttribute("unlockedLevelIndex", unlockedLevelIndex);
+
+        boolean isSolved = selectedLevelIndex < unlockedLevelIndex;
+        model.addAttribute("isSolved", isSolved);
+
         return "fragments/pegsolitaire_levels";
     }
+
     @RequestMapping("/pegsolitaire/levels/prev")
     public String previousLevel() {
         selectedLevelIndex = (selectedLevelIndex - 1 + levels.length) % levels.length;
@@ -238,10 +262,15 @@ public class PegSolitaireController {
         selectedLevelIndex = (selectedLevelIndex + 1) % levels.length;
         return "redirect:/pegsolitaire/levels";
     }
+
     @RequestMapping("/pegsolitaire/startSelected")
     public String startSelectedLevel() {
-        game = new GameBoard(levels[selectedLevelIndex]);
-        return "redirect:/pegsolitaire";
+        if (selectedLevelIndex <= unlockedLevelIndex) {
+            game = new GameBoard(levels[selectedLevelIndex]);
+            return "redirect:/pegsolitaire";
+        } else {
+            return "redirect:/pegsolitaire/levels?locked=true";
+        }
     }
     @RequestMapping("/pegsolitaire/selectLevel")
     public String selectLevel(@RequestParam("level") String levelName) {
@@ -249,6 +278,55 @@ public class PegSolitaireController {
         game = new GameBoard(selected);
         return "redirect:/pegsolitaire";
     }
+    @RequestMapping("/pegsolitaire/continue")
+    public String continueToNextUnlockedLevel() {
+        if (unlockedLevelIndex > selectedLevelIndex) {
+            selectedLevelIndex = unlockedLevelIndex;
+            game = new GameBoard(levels[selectedLevelIndex]);
+        }
+        return "redirect:/pegsolitaire";
+    }
+
+
+
+
+    @RequestMapping("/pegsolitaire/comment")
+    public String addComment(@RequestParam("commentText") String commentText,
+                             @RequestParam("rating") int rating,
+                             HttpSession session) {
+        String user = username != null ? username : (String) session.getAttribute("username");
+
+        if (user != null && !commentText.trim().isEmpty()) {
+            Comment comment = new Comment("PegSolitaire", user, commentText, new Date());
+            commentService.addComment(comment);
+
+            try {
+                Rating r = new Rating("PegSolitaire", user, rating, new Date());
+                ratingService.setRating(r);
+            } catch (RatingException e) {
+                e.printStackTrace();
+            }
+        }
+        return "redirect:/pegsolitaire/reviews";
+    }
+    @RequestMapping("/pegsolitaire/reviews")
+    public String reviewsScreen(Model model) {
+        List<Comment> comments = commentService.getComments("PegSolitaire");
+        model.addAttribute("comments", comments);
+
+        try {
+            int avgRating = ratingService.getAverageRating("PegSolitaire");
+            int voteCount = ratingService.getVoteCount("PegSolitaire");
+            model.addAttribute("avgRating", avgRating);
+            model.addAttribute("voteCount", voteCount);
+        } catch (RatingException e) {
+            model.addAttribute("avgRating", 0);
+            model.addAttribute("voteCount", 0);
+        }
+
+        return "fragments/pegsolitaire_reviews";
+    }
+
 
 
     //

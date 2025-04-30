@@ -57,6 +57,14 @@
             z-index: 14;
         }
 
+        .play-button-wrapper {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+        }
+
         .card:hover {
             background: rgba(255, 255, 255, 0.3);
             box-shadow: 0.3em 0.3em 1em rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 255, 255, 0.2);
@@ -94,7 +102,6 @@
         }
 
 
-
         .decorated-image {
             border-radius: 20px;
             box-shadow: 0 0 15px rgba(0,0,0,0.5), 0 0 10px rgba(255, 255, 255, 0.2);
@@ -105,8 +112,6 @@
         .decorated-image:hover {
             box-shadow: 0 0 25px rgba(255,255,255,0.6), 0 0 15px rgba(78, 110, 105, 0.7);
         }
-
-
 
 
         .level-preview-wrapper {
@@ -239,6 +244,81 @@
         .home-btn:active {
             transform: scale(0.95);
         }
+
+
+        .side-peg {
+            position: absolute;
+            bottom: -28vh;
+            width: 50vw;
+            height: 95vh;
+            background-image: url('/images/girlpeg.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            transform-origin: center bottom;
+            transition: transform 0.3s ease;
+            z-index: 13;
+            opacity: 0.95;
+            pointer-events: auto;
+        }
+        .side-peg.right {
+            right: -61vw;
+        }
+
+        .side-peg.right:hover {
+            transform: rotateX(30deg) translateY(-40px) translateZ(-50px);
+        }
+
+        .speech-bubble {
+            position: absolute;
+            top: -10%;
+            left: -60%;
+            width: 600px;
+            z-index: 14;
+            transition: transform 0.3s ease;
+        }
+
+        .side-peg.right:hover .speech-bubble {
+            transform: translateY(-40px) translateZ(-50px);
+        }
+        .side-peg img.speech-bubble {
+            pointer-events: none;
+        }
+
+
+
+        .solved {
+            border: 6px solid gold;
+            border-radius: 20px;
+            padding: 4px;
+            box-sizing: border-box;
+            animation: solved-glow 2s infinite ease-in-out;
+            position: relative;
+        }
+        @keyframes solved-glow {
+            0% { box-shadow: 0 0 10px gold; }
+            50% { box-shadow: 0 0 25px yellow; }
+            100% { box-shadow: 0 0 10px gold; }
+        }
+        .solved-banner {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: linear-gradient(135deg, gold, orange);
+            color: white;
+            font-weight: bold;
+            padding: 6px 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .solved-banner::before {
+            font-size: 20px;
+        }
+
     </style>
 </head>
 <body>
@@ -249,6 +329,10 @@
 
 <div class="card">
 
+    <div class="side-peg right">
+        <img src="/images/Speach_level.png" alt="speech" class="speech-bubble">
+    </div>
+
     <a href="/pegsolitaire/menu" class="home-btn" title="Menu">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
              stroke="currentColor" stroke-width="1.5" width="30" height="30">
@@ -257,7 +341,6 @@
         </svg>
     </a>
     <div class="level-selector" style="text-align:center; padding:42px;">
-
 
         <div style="display:flex; align-items:center; justify-content:center;">
 
@@ -272,10 +355,14 @@
             </div>
 
             <div class="level-preview-wrapper">
+
                 <div class="level-label" th:text="${currentLevel}">Level</div>
-                <a href="/pegsolitaire/startSelected">
-                    <img th:src="@{${imagePath}}" alt="level" width="250" height="250" class="decorated-image">
-                </a>
+                <div class="solved-wrapper" th:classappend="${isSolved} ? 'solved' : ''">
+                    <a href="/pegsolitaire/startSelected">
+                        <img th:src="@{${imagePath}}" alt="level" width="250" height="250" class="decorated-image">
+                    </a>
+                    <div class="solved-banner" th:if="${isSolved}">Solved</div>
+                </div>
             </div>
 
             <div class="button-container">
@@ -288,11 +375,21 @@
                 </button>
             </div>
         </div>
-
         <br>
-        <button class="play-button" onclick="location.href='/pegsolitaire/startSelected'">PLAY</button>
-    </div>
 
+
+        <form th:action="@{/pegsolitaire/startSelected}" method="get" class="play-button-wrapper">
+            <button type="submit"
+                    class="play-button"
+                    th:disabled="${currentLevel.ordinal() > unlockedLevelIndex and currentLevel.ordinal() != 0}"
+                    th:style="${currentLevel.ordinal() > unlockedLevelIndex and currentLevel.ordinal() != 0} ? 'background-color: gray; cursor: not-allowed;' : ''">
+                <span th:text="${currentLevel.ordinal() > unlockedLevelIndex and currentLevel.ordinal() != 0} ? '🔒 Locked' : 'PLAY'">PLAY</span>
+            </button>
+        </form>
+
+
+    </div>
 </div>
+
 </body>
 </html>

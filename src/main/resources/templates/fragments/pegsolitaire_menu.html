@@ -9,38 +9,40 @@
     </style>
 </head>
 <body>
-
 <div class="footer-text">© 2025 Mukosii. Peg Solitaire.</div>
-
 
 <div class="top-border"></div>
 <div class="bottom-border"></div>
-
 <h1 class="title">Menu</h1>
 
-<div class="menu-button-container" id="btn1">
-    <button class="shadow__btn" onclick="location.href='/pegsolitaire/comics'">Play</button>
-</div>
+<a href="/pegsolitaire/comics" class="menu-button" style="text-decoration: none;">
+    <img src="/images/tile.jpg" alt="tile">
+    <span class="menu-button-text">Play</span>
+</a>
 
-<div class="menu-button-container" id="btn2">
-    <button class="shadow__btn" onclick="location.href='/pegsolitaire/rules'">Rules</button>
-</div>
 
-<div class="menu-button-container" id="btn3">
-    <button class="shadow__btn" onclick="location.href='/pegsolitaire/leaderboard'">LeaderBoard</button>
-</div>
+<a href="/pegsolitaire/rules" class="menu-button" style="top: 35vh; text-decoration: none;">
+    <img src="/images/tile.jpg" alt="tile">
+    <span class="menu-button-text">Rules</span>
+</a>
 
-<div class="menu-button-container" id="btn4">
-    <button class="shadow__btn" onclick="location.href='/pegsolitaire/reviews'">Reviews</button>
-</div>
+<a href="/pegsolitaire/leaderboard" class="menu-button" style="top: 48vh; text-decoration: none;">
+    <img src="/images/tile.jpg" alt="tile">
+    <span class="menu-button-text">LeaderBoard</span>
+</a>
 
-<div class="menu-button-container" id="btn5">
-    <button class="shadow__btn" onclick="location.href='/pegsolitaire/exit'">Exit</button>
-</div>
+<a href="/pegsolitaire/reviews" class="menu-button" style="top: 61vh; text-decoration: none;">
+    <img src="/images/tile.jpg" alt="tile">
+    <span class="menu-button-text">Reviews</span>
+</a>
+
+<a href="/pegsolitaire/exit" class="menu-button" style="top: 74vh; text-decoration: none;">
+    <img src="/images/tile.jpg" alt="tile">
+    <span class="menu-button-text">Exit</span>
+</a>
 
 
 <div class="side-peg right"></div>
-
 <canvas id="particles"></canvas>
 
 <script>
