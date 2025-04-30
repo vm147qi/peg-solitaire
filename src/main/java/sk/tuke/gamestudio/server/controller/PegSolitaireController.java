@@ -312,7 +312,20 @@ public class PegSolitaireController {
     @RequestMapping("/pegsolitaire/reviews")
     public String reviewsScreen(Model model) {
         List<Comment> comments = commentService.getComments("PegSolitaire");
-        model.addAttribute("comments", comments);
+
+        List<CommentWithRating> commentsWithRatings = comments.stream()
+                .map(comment -> {
+                    int rating;
+                    try {
+                        rating = ratingService.getRating("PegSolitaire", comment.getPlayer());
+                    } catch (RatingException e) {
+                        rating = 0;
+                    }
+                    return new CommentWithRating(comment, rating);
+                })
+                .collect(Collectors.toList());
+
+        model.addAttribute("commentsWithRatings", commentsWithRatings);
 
         try {
             int avgRating = ratingService.getAverageRating("PegSolitaire");
@@ -327,6 +340,24 @@ public class PegSolitaireController {
         return "fragments/pegsolitaire_reviews";
     }
 
+
+    public class CommentWithRating {
+        private final Comment comment;
+        private final int rating;
+
+        public CommentWithRating(Comment comment, int rating) {
+            this.comment = comment;
+            this.rating = rating;
+        }
+
+        public Comment getComment() {
+            return comment;
+        }
+
+        public int getRating() {
+            return rating;
+        }
+    }
 
 
     //

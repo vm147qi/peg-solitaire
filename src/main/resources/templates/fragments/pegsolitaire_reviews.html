@@ -304,6 +304,7 @@
             max-width: 800px;
             padding: 10px;
             scroll-behavior: smooth;
+            transition: scroll-left 0.3s ease;
         }
 
         .comments-scroll ul {
@@ -314,70 +315,150 @@
         }
 
         .comment-box {
-            background-color: #fefefe; /* Змінено фон на білий */
+            background-color: #fefefe;
             padding: 15px;
             border-radius: 15px;
             width: 220px;
             min-height: 120px;
             display: inline-block;
-            color: #7b7b7c; /* Текст чорний */
+            color: #7b7b7c;
             text-align: left;
             font-size: 16px;
             flex-shrink: 0;
             box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-            position: relative; /* Для позиціювання дати */
+            position: relative;
             text-shadow: none;
         }
 
         .comment-box .player-avatar {
-            display: inline-block;
-            width: 30px;   /* Розмір кружка */
-            height: 30px;  /* Розмір кружка */
-            background-color: #69948d;  /* Зелений колір */
-            border-radius: 50%;  /* Робимо круглим */
-            margin-right: 3px;  /* Відстань між кружком і ім'ям */
-            vertical-align: middle;  /* Вирівнюємо по вертикалі */
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 35px;
+            height: 35px;
+            background-color: #69948d;
+            border-radius: 50%;
+            margin-right: 3px;
+            vertical-align: middle;
+        }
+        .comment-box .player-avatar svg {
+            width: 20px;
+            height: 20px;
+            stroke: white;
         }
 
         .comment-box strong {
-            font-size: 18px; /* Збільшити розмір імені */
-            color: #333; /* Темніший колір для імені */
+            font-size: 18px;
+            color: #333;
             text-shadow: none;
         }
 
         .comment-box em {
-            font-size: 12px; /* Зменшити розмір дати */
-            color: #777; /* Світлий колір для дати */
+            font-size: 12px;
+            color: #777;
             position: absolute;
             bottom: 10px;
             right: 10px;
             text-shadow: none;
         }
 
-        .scroll-btn {
-            background-color: #4e6e69;
-            color: white;
+
+
+        .scroll-btn.custom-d-btn {
+            background-color: #69948d;
             border: none;
-            font-size: 24px;
+            width: 50px;
+            height: 70px;
             cursor: pointer;
-            padding: 10px 15px;
-            border-radius: 50%;
+            border-radius: 50% 0 0 50% / 50%;
             margin: 0 10px;
-            z-index: 5;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
-        .scroll-btn:hover {
-            background-color: #3a5550;
-            transform: scale(1.1);
+
+        .scroll-btn.custom-d-btn.right {
+            border-radius: 0 50% 50% 0 / 50%;
         }
+
+        .scroll-btn.custom-d-btn:hover {
+            background-color: #69948d;
+            transform: scale(1.05);
+        }
+
+        .play-icon {
+            width: 0;
+            height: 0;
+            border-style: solid;
+        }
+
+        .play-icon.right-arrow {
+            border-width: 12px 0 12px 18px;
+            border-color: transparent transparent transparent #fff1d5;
+        }
+
+        .play-icon.left-arrow {
+            border-width: 12px 18px 12px 0;
+            border-color: transparent #fff1d5 transparent transparent;
+        }
+
+
 
         .comments-scroll::-webkit-scrollbar {
             display: none;
         }
 
         .comments-scroll {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+            overflow-x: auto;
+            white-space: nowrap;
+            max-width: 800px;
+            padding: 10px;
+            scroll-behavior: smooth;
+        }
+
+        .stars {
+            color: gold;
+            font-size: 1.2em;
+        }
+
+
+
+
+        .rating-summary {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .rating-summary h3 {
+            font-size: 1.5em;
+            color: #ffffff;
+            font-weight: 600;
+        }
+        .stars {
+            color: gold;
+            font-size: 1.5em;
+            animation: ratingAnimation 1s ease-in-out;
+        }
+        @keyframes ratingAnimation {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        .vote-count {
+            font-size: 1em;
+            color: #ffffff;
+            margin-top: 10px;
+        }
+        .vote-count span {
+            font-weight: bold;
+            color: #ffffff;
         }
     </style>
 </head>
@@ -423,23 +504,40 @@
 
 
 <div class="comments-container">
-    <button class="scroll-btn left" onclick="scrollComments(-1)">&#8592;</button>
+    <button class="scroll-btn custom-d-btn left" onclick="scrollComments(-1)">
+        <span class="play-icon left-arrow"></span>
+    </button>
     <div class="comments-scroll">
         <ul>
-            <th:block th:each="comment : ${comments}">
-                <li class="comment-box">
-                    <span class="player-avatar"></span>
-                    <strong th:text="${comment.player}">Player</strong><br>
-                    <span th:text="${comment.comment}">Коментар</span><br>
-                    <em th:text="${#dates.format(comment.commentedOn, 'dd.MM.yyyy HH:mm')}">дата</em>
+            <th:block th:each="entry : ${commentsWithRatings}">
+            <li class="comment-box">
+                    <span class="player-avatar">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                               stroke-width="1.5" stroke="currentColor" width="24" height="24">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                        </svg>
+                    </span>
+                    <strong th:text="${entry.comment.player}">Player</strong><br>
+                <span class="stars" th:utext="${'★'.repeat(entry.rating)}">★★★★★</span><br>
+                    <span th:text="${entry.comment.comment}">Коментар</span><br>
+                    <em th:text="${#dates.format(entry.comment.commentedOn, 'dd.MM.yyyy HH:mm')}">дата</em>
                 </li>
             </th:block>
         </ul>
     </div>
-    <button class="scroll-btn right" onclick="scrollComments(1)">&#8594;</button>
+    <button class="scroll-btn custom-d-btn right" onclick="scrollComments(1)">
+        <span class="play-icon right-arrow"></span>
+    </button>
 </div>
 
-<h3>Середня оцінка: <span th:text="${avgRating}">0</span>/5 (всього <span th:text="${voteCount}">0</span> оцінок)</h3>
+<div class="rating-summary">
+    <h3>Rating:
+        <span class="stars" th:utext="${'★'.repeat(avgRating)}"></span>/5
+        ( <span th:text="${voteCount}">0</span> Votes)
+    </h3>
+</div>
+
 </body>
 <script>
     function openModal() {
@@ -460,9 +558,38 @@
 
     function scrollComments(direction) {
         const container = document.querySelector('.comments-scroll');
-        const commentWidth = document.querySelector('.comment-box').offsetWidth + 15; // ширина коментаря + відстань між ними
-        const scrollAmount = commentWidth * 3; // прокручувати на 3 коментаря (по 3 елементи за раз)
-        container.scrollLeft += direction * scrollAmount;
+        const commentWidth = document.querySelector('.comment-box').offsetWidth + 15;
+        const scrollAmount = commentWidth * 3;
+        const targetScroll = container.scrollLeft + direction * scrollAmount;
+
+        const scrollDuration = 500;
+        const startScroll = container.scrollLeft;
+        const distance = targetScroll - startScroll;
+        let startTime = null;
+
+        function smoothScroll(timestamp) {
+            if (!startTime) startTime = timestamp;
+            const progress = timestamp - startTime;
+            const scrollStep = easeInOutCubic(progress, startScroll, distance, scrollDuration);
+
+            container.scrollLeft = scrollStep;
+
+            if (progress < scrollDuration) {
+                window.requestAnimationFrame(smoothScroll);
+            } else {
+                container.scrollLeft = targetScroll;
+            }
+        }
+
+        window.requestAnimationFrame(smoothScroll);
     }
+
+    function easeInOutCubic(t, b, c, d) {
+        t /= d / 2;
+        if (t < 1) return c / 2 * t * t * t + b;
+        t -= 2;
+        return c / 2 * (t * t * t + 2) + b;
+    }
+
 </script>
 </html>
