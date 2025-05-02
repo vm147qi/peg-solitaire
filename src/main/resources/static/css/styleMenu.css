@@ -17,7 +17,7 @@ body {
 
 .side-peg {
     position: absolute;
-    bottom: -10vh;
+    bottom: -15vh;
     width: 50vw;
     height: 95vh;
     background-image: url('/images/crygirl.png');
@@ -25,8 +25,32 @@ body {
     background-repeat: no-repeat;
     transform-origin: center bottom;
     transition: transform 0.3s ease;
-    z-index: 1;
+    z-index: 13;
     opacity: 0.95;
+    pointer-events: auto;
+}
+.side-peg.right {
+    right: -61vw;
+}
+
+.side-peg.right:hover {
+    transform: rotateX(30deg) translateY(-40px) translateZ(-50px);
+}
+
+.speech-bubble {
+    position: absolute;
+    top: -10%;
+    left: -60%;
+    width: 600px;
+    z-index: 14;
+    transition: transform 0.3s ease;
+}
+
+.side-peg.right:hover .speech-bubble {
+    transform: translateY(-40px) translateZ(-50px);
+}
+.side-peg img.speech-bubble {
+    pointer-events: none;
 }
 
 @font-face {
@@ -65,7 +89,7 @@ body {
 
 .title {
     font-family: '9thyssei', monospace;
-    font-size: 60px;
+    font-size: 80px;
     color: white;
     text-shadow: 2px 2px 4px black;
     position: absolute;
@@ -74,7 +98,22 @@ body {
     transform: translateX(-50%);
     z-index: 5;
     margin: 0;
+    animation: fadeIn 1s ease-out;
 }
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+
+
 
 .menu-button {
     position: absolute;
@@ -121,3 +160,5 @@ body {
     color: white;
     z-index: 11;
 }
+
+

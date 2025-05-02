@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title>Peg Solitaire levels</title>
+    <link rel="icon" href="/images/love_peg.png" type="image/png">
     <style>
         body {
             background-image: url('/images/backround.jpg');
@@ -248,7 +249,7 @@
 
         .side-peg {
             position: absolute;
-            bottom: -28vh;
+            bottom: -31vh;
             width: 50vw;
             height: 95vh;
             background-image: url('/images/girlpeg.png');
@@ -261,7 +262,7 @@
             pointer-events: auto;
         }
         .side-peg.right {
-            right: -61vw;
+            right: -62vw;
         }
 
         .side-peg.right:hover {
@@ -318,6 +319,31 @@
             font-size: 20px;
         }
 
+
+        .leaderboard-title {
+            font-size: 60px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            text-align: center;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: linear-gradient(45deg, gold, #f2edcc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.6);
+            animation: fadeIn 1s ease-out;
+        }
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 <body>
@@ -325,6 +351,8 @@
 <div class="top-border"></div>
 <div class="bottom-border"></div>
 <div class="footer-text">© 2025 Mukosii. Peg Solitaire.</div>
+
+<div class="leaderboard-title">GET STARTED PLAYING</div>
 
 <div class="card">
     <div class="side-peg right">

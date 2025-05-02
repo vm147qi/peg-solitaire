@@ -355,16 +355,13 @@ public class PegSolitaireController {
             this.comment = comment;
             this.rating = rating;
         }
-
         public Comment getComment() {
             return comment;
         }
-
         public int getRating() {
             return rating;
         }
     }
-
 
     //
     @RequestMapping("/pegsolitaire/exit")
