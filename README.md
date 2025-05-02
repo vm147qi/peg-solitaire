@@ -77,7 +77,7 @@ Functions for the game that were performed outside the task:
 
 13. Function to cancel a move.
 
-
+14. Dokončené úrovne sú označené žltým rámčekom a slovom dokončené
 
 
 Slovenská verzia ==============
@@ -107,4 +107,6 @@ Funkcie pre hru, ktoré boli vykonané mimo úlohy:
 12. Funkcia na opakované prehrávanie hry.
 
 13. Funkcia na zrušenie ťahu.
+
+14. Completed levels are marked with a yellow box and the word completed
 ...
