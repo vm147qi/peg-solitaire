@@ -46,6 +46,8 @@ public class PegSolitaireController {
 
     private int unlockedLevelIndex = 0;
 
+    private boolean allLevelsCompleted = false;
+
     @RequestMapping("/pegsolitaire")
     public String pegsolitaire(@RequestParam(value = "fromRow", required = false) Integer fromRow,
                                @RequestParam(value = "fromCol", required = false) Integer fromCol,
@@ -95,10 +97,12 @@ public class PegSolitaireController {
             saveScore(session);
         }
 
-        if (remainingPegs == 1
-                && selectedLevelIndex == unlockedLevelIndex
-                && unlockedLevelIndex < levels.length - 1) {
-            unlockedLevelIndex++;
+        if (remainingPegs == 1 && selectedLevelIndex == unlockedLevelIndex) {
+            if (unlockedLevelIndex < levels.length - 1) {
+                unlockedLevelIndex++;
+            } else {
+                allLevelsCompleted = true;
+            }
         }
 
         model.addAttribute("game", game);
@@ -107,6 +111,8 @@ public class PegSolitaireController {
         model.addAttribute("gameState", game.getState());
         model.addAttribute("remainingPegs", game.getRemainingPegs());
         model.addAttribute("unlockedLevelIndex", unlockedLevelIndex);
+        model.addAttribute("currentLevel", levels[selectedLevelIndex]);
+        model.addAttribute("isSolved", selectedLevelIndex <= unlockedLevelIndex);
 
         return "pegsolitaire";
     }

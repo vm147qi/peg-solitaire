@@ -24,6 +24,24 @@
             overflow: hidden;
         }
 
+        .parallax {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -2;
+            background: url('/images/rulesbackround.png') no-repeat center center fixed;
+            background-size: cover;
+            animation: parallax 6s linear infinite;
+        }
+
+        @keyframes parallax {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(7%); }
+            100% { transform: translateY(0); }
+        }
+
         .top-border, .bottom-border {
             position: absolute;
             width: 100%;
@@ -47,6 +65,7 @@
             z-index: 11;
         }
 
+
         .leaderboard-title {
             font-size: 60px;
             font-weight: 800;
@@ -61,7 +80,6 @@
             text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.6);
             animation: fadeIn 1s ease-out;
         }
-
         @keyframes fadeIn {
             0% {
                 opacity: 0;
@@ -74,109 +92,93 @@
         }
 
         .leaderboard-table {
-            background: rgba(78, 110, 105, 0.8);
+            background: rgba(255, 255, 255, 0.2);
             border-radius: 20px;
-            padding: 30px 40px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(8px);
+            padding: 20px 40px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            min-width: 400px;
-            max-height: 70vh;
+            gap: 12px;
+            width: 480px;
+            max-height: 80vh;
             overflow-y: auto;
+            color: white;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
 
         .leaderboard-row {
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            font-size: 22px;
-            padding: 10px 20px;
-            background-color: rgba(255, 255, 255, 0.1);
+            padding: 8px 20px;
             border-radius: 12px;
-            transition: background 0.3s, transform 0.3s;
-            position: relative;
+            background-color: #eceadb;
+            font-size: 20px;
+            font-weight: 500;
+            transition: transform 0.2s ease;
         }
 
         .leaderboard-row:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
+            transform: scale(1.01);
         }
-
 
         .first-place {
-            background: linear-gradient(45deg, gold, #f2edcc);
-            color: #F2EDDC;
-            font-weight: bold;
-            font-size: 28px;
-            position: relative;
-            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.6);
-            border: 3px solid gold;
-            transform: scale(1.05);
-            animation: pulse 1.5s infinite alternate;
-        }
-
-        @keyframes pulse {
-            0% {
-                transform: scale(1.05);
-            }
-            100% {
-                transform: scale(1.1);
-            }
+            background-color: #69948d;
+            border-left: 6px solid #293b38;
         }
 
         .second-place {
-            background: silver;
-            color: #F2EDDC;
-            font-weight: bold;
+            background-color: #84bab1;
+            border-left: 6px solid #69948d;
         }
 
         .third-place {
-            background: #cd7f32;
-            color: #F2EDDC;
-            font-weight: bold;
+            background-color: #9fe0d5;
+            border-left: 6px solid #84bab1;
         }
 
-        .player-name, .player-score {
-            width: 50%;
+        .rank-badge {
+            font-weight: bold;
+            font-size: 24px;
+            width: 40px;
+        }
+
+        .player-info {
+            flex-grow: 1;
+            margin-left: 15px;
         }
 
         .player-name {
-            text-align: left;
             font-weight: 600;
+            font-size: 18px;
         }
 
         .player-score {
-            text-align: right;
-            font-weight: 500;
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
         }
 
-        .star {
-            color: #D9923B;
-            font-size: 40px;
-            margin-left: 180px;
-            position: relative;
-            top: -5px;
-            animation: star-shine 1s infinite alternate;
+        .avatar  {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 35px;
+            height: 35px;
+            background-color: #638881;
+            border-radius: 50%;
+            margin-right: 3px;
+            vertical-align: middle;
         }
-
-        @keyframes star-shine {
-            0% {
-                transform: scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(1.2);
-                opacity: 0.8;
-            }
+        .avatar .player-avatar svg {
+            width: 20px;
+            height: 20px;
+            color: white;
         }
-
-        .player-name .star {
-            position: absolute;
-            left: 0;
-            top: -4px;
+        .avatar svg {
+            color: white;
         }
-
 
         /* Menu */
         .home-btn {
@@ -206,12 +208,120 @@
         .home-btn:active {
             transform: scale(0.95);
         }
+
+
+        .top-player-card {
+            position: absolute;
+            left: 130px;
+            top: 130px;
+            width: 300px;
+            height: 400px;
+            background: #f3f1e4;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            padding: 20px 15px;
+            text-align: center;
+            color: #333;
+            font-family: 'Poppins', sans-serif;
+            z-index: 10;
+
+
+            animation: popIn 0.6s ease-out forwards;
+            opacity: 0;
+            transform: scale(0.8);
+        }
+        @keyframes popIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .top-rank-badge {
+            background-color: #69948d;
+            color: white;
+            font-weight: bold;
+            border-radius: 10px 10px 0 0;
+            padding: 5px 10px;
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .avatarr  {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 120px;
+            height: 120px;
+            background-color: #638881;
+            border-radius: 50%;
+            margin-right: 3px;
+            vertical-align: middle;
+        }
+        .avatarr svg {
+            color: white;
+            width: 100px;
+            height: 100px;
+        }
+
+        .top-player-stars {
+            font-size: 50px;
+            color: orange;
+            margin-bottom: 7px;
+        }
+
+        .top-player-name {
+            font-size: 22px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .top-player-role {
+            font-size: 17px;
+            color: #777;
+            margin-bottom: 10px;
+        }
+
+        .top-player-score {
+            font-size: 25px;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .score-background {
+            background-color: rgba(114, 156, 148, 0.66);
+            border-radius: 10px;
+            padding: 10px 0;
+            margin: 0 auto 15px auto;
+            width: 80%;
+        }
+
+        .top-player-score {
+            font-size: 30px;
+            font-weight: bold;
+            color: white;
+            margin: 0;
+        }
+
+        .score-label {
+            font-size: 14px;
+            color: #555;
+        }
+
+
     </style>
 </head>
 <body>
 <div class="top-border"></div>
 <div class="bottom-border"></div>
 <div class="footer-text">© 2025 Mukosii. Peg Solitaire.</div>
+
+<div class="parallax"></div>
 
 <a href="/pegsolitaire/menu" class="home-btn" title="Menu">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -221,22 +331,48 @@
     </svg>
 </a>
 
+<div class="top-player-card">
+    <div class="top-rank-badge">1<sup>st</sup> Rank</div>
+    <span class="avatarr">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                               stroke-width="1.5" stroke="currentColor" width="24" height="24">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                        </svg>
+    </span>
+    <div class="top-player-stars">★★★</div>
+    <div class="top-player-name" th:text="${scores[0].player}"></div>
+    <div class="top-player-role">Best player</div>
+    <div class="score-background">
+        <div class="top-player-score" th:text="${scores[0].points}"></div>
+        <div class="score-label">Points</div>
+    </div>
+</div>
+
+
 <div class="leaderboard-title">LEADERBOARD</div>
 <div class="leaderboard-table">
     <div th:each="score, iterStat : ${scores}">
         <div th:if="${iterStat.index < 7}" class="leaderboard-row"
-             th:classappend="
-         ${iterStat.index == 0} ? 'first-place' :
-         (${iterStat.index == 1} ? 'second-place' :
-         (${iterStat.index == 2} ? 'third-place' : ''))">
-            <div class="player-name">
-                <span th:text="${score.player}">Player</span>
-                <span th:if="${iterStat.index == 0}" class="star">★</span>
+             th:classappend=" ${iterStat.index == 0} ? 'first-place' :
+                              (${iterStat.index == 1} ? 'second-place' :
+                              (${iterStat.index == 2} ? 'third-place' : ''))">
+            <div class="rank-badge" th:text="${iterStat.index + 1} + '.'">1.</div>
+                    <span class="avatar">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                               stroke-width="1.5" stroke="currentColor" width="24" height="24">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                        </svg>
+                    </span>
+            <div class="player-info">
+                <span class="player-name" th:text="${score.player}">Player</span>
             </div>
-            <div class="player-score" th:text="${score.points}">Points</div>
+            <div class="player-score" th:text="'Score ' + ${score.points}">Score</div>
         </div>
     </div>
 </div>
+
 
 </body>
 </html>

@@ -474,18 +474,95 @@
         .lose-btn:hover {
             background-color: #e3655b;
         }
-
         .modall.lose .win-btn {
             display: none;
         }
         .modall.win .lose-btn {
             display: none;
         }
-
         .modall.lose p:last-of-type {
             font-size: 35px;
             color: white;
             margin-top: -20px;
+        }
+
+
+        /* Modal window for the end of the game */
+        .final-victory-modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            opacity: 0;
+            transition: all 0.3s ease;
+            width: 480px;
+            height: 300px;
+            background-color: #eeecdf;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            text-align: center;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            animation: modalFadeIn 0.5s ease-out forwards;
+        }
+
+        @keyframes modalFadeIn {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .victory-title {
+            font-size: 2.1em;
+            font-weight: bold;
+            color: #e3655b;
+            margin-top: 5px;
+        }
+
+        .modal-body {
+            position: relative;
+            font-size: 1.2em;
+            top: -50px;
+            color: #596157;
+            text-shadow: none;
+            margin: 0;
+        }
+
+        /* Home button */
+        .homee-btn {
+            position: absolute;
+            top: 277px;
+            left: 15px;
+            background-color: #4e6e69;
+            color: white;
+            border: none;
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 15;
+        }
+        .homee-btn:hover {
+            background-color: #3a5550;
+            transform: scale(1.1);
+        }
+        .homee-btn:active {
+            transform: scale(0.95);
+        }
+
+        .peg-love-img {
+            position: absolute;
+            bottom: -5px;
+            right: -10px;
+            width: 150px;
+            height: auto;
         }
     </style>
 </head>
@@ -494,6 +571,28 @@
 <div class="bottom-border"></div>
 <div class="footer-text">© 2025 Mukosii. Peg Solitaire.</div>
 
+<!-- Modal for Final Victory -->
+<div class="final-victory-modal" id="finalVictoryModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content final-win-content">
+            <div class="modal-header">
+                <h5 class="modal-title victory-title">🎉 PEG SOLITAIRE GAME IS OVER!!!</h5>
+            </div>
+            <div class="modal-body">
+                <p>You saved a girl's love and she is very grateful to you!</p>
+                <p>Now they can be together forever     </p>
+            </div>
+                <a href="/pegsolitaire/menu" class="homee-btn" title="Menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                         stroke="currentColor" stroke-width="1.5" width="30" height="30">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                    </svg>
+                </a>
+            <img src="/images/love_peg.png" alt="Peg Love" class="peg-love-img">
+        </div>
+    </div>
+</div>
 
 <!-- Modal for Game Result -->
 <div class="modall" id="gameResultModal" tabindex="-1" role="dialog" aria-labelledby="gameResultModalLabel" aria-hidden="true">
@@ -561,7 +660,6 @@
     </svg>
 </a>
 
-
 <div id="hintOverlay" class="modal-overlay" onclick="closeHintModal()"></div>
 <div id="hintModal" class="modal">
     <div class="modal-content">
@@ -575,7 +673,6 @@
         <button class="ok-btn" onclick="closeHintModal()">OK</button>
     </div>
 </div>
-
 
 <div class="game-wrapper">
     <div class="board-container">
@@ -648,9 +745,17 @@
         const modalTitle = document.getElementById('gameResultModalLabel');
         const modalMessage = modal.querySelector('.modal-body p');
         const remainingPegsElement = modal.querySelector('.remaining-pegs');
+        const finalModal = document.getElementById('finalVictoryModal');
+
 
         const winBtn = document.getElementById('winBtn');
         const loseBtn = document.getElementById('loseBtn');
+
+        if (resultMessage === 'finalWin') {
+            finalModal.style.display = 'block';
+            finalModal.classList.add('show');
+            return;
+        }
 
         if (resultMessage === 'win') {
             modal.classList.add('win');
@@ -675,15 +780,21 @@
         modal.classList.add('show');
     }
 
-    window.onload = function() {
+    window.onload = function () {
         const gameState = '[[${gameState}]]';
+        const currentLevelName = '[[${currentLevel.name()}]]'; // Java enum, e.g., EUROPEAN
+
         if (gameState === 'WON') {
-            showGameResultModal('win');
+            if (currentLevelName === 'EUROPEAN') {
+                showGameResultModal('finalWin');
+            } else {
+                showGameResultModal('win');
+            }
         } else if (gameState === 'NO_MOVES') {
             showGameResultModal('lose');
         }
     };
-</script>
 
+</script>
 </body>
 </html>

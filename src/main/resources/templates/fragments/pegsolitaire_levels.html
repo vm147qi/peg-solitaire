@@ -285,7 +285,6 @@
         }
 
 
-
         .solved {
             border: 6px solid gold;
             border-radius: 20px;
@@ -328,7 +327,6 @@
 <div class="footer-text">© 2025 Mukosii. Peg Solitaire.</div>
 
 <div class="card">
-
     <div class="side-peg right">
         <img src="/images/Speach_level.png" alt="speech" class="speech-bubble">
     </div>
@@ -357,8 +355,8 @@
             <div class="level-preview-wrapper">
 
                 <div class="level-label" th:text="${currentLevel}">Level</div>
-                <div class="solved-wrapper" th:classappend="${isSolved} ? 'solved' : ''">
-                    <a href="/pegsolitaire/startSelected">
+                <div th:class="'solved-wrapper' + (${isSolved} ? ' solved' : '')">
+                <a href="/pegsolitaire/startSelected">
                         <img th:src="@{${imagePath}}" alt="level" width="250" height="250" class="decorated-image">
                     </a>
                     <div class="solved-banner" th:if="${isSolved}">Solved</div>
@@ -377,7 +375,6 @@
         </div>
         <br>
 
-
         <form th:action="@{/pegsolitaire/startSelected}" method="get" class="play-button-wrapper">
             <button type="submit"
                     class="play-button"
@@ -386,10 +383,7 @@
                 <span th:text="${currentLevel.ordinal() > unlockedLevelIndex and currentLevel.ordinal() != 0} ? '🔒 Locked' : 'PLAY'">PLAY</span>
             </button>
         </form>
-
-
     </div>
 </div>
-
 </body>
 </html>

@@ -24,6 +24,24 @@
             overflow: hidden;
         }
 
+        .parallax {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -2;
+            background: url('/images/rulesbackround.png') no-repeat center center fixed;
+            background-size: cover;
+            animation: parallax 6s linear infinite;
+        }
+
+        @keyframes parallax {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(7%); }
+            100% { transform: translateY(0); }
+        }
+
         .top-border, .bottom-border {
             position: absolute;
             width: 100%;
@@ -468,6 +486,8 @@
 
 <div class="footer-text">© 2025 Mukosii. Peg Solitaire.</div>
 
+<div class="parallax"></div>
+
 <a href="/pegsolitaire/menu" class="home-btn" title="Menu">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
          stroke="currentColor" stroke-width="1.5" width="30" height="30">
@@ -533,7 +553,7 @@
 
 <div class="rating-summary">
     <h3>Rating:
-        <span class="stars" th:utext="${'★'.repeat(avgRating)}"></span>/5
+        <span class="stars" th:utext="${'★'.repeat(avgRating)}"></span>
         ( <span th:text="${voteCount}">0</span> Votes)
     </h3>
 </div>
@@ -590,6 +610,5 @@
         t -= 2;
         return c / 2 * (t * t * t + 2) + b;
     }
-
 </script>
 </html>
